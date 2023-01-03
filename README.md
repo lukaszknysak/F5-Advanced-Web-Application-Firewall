@@ -44,7 +44,7 @@ In this module, we will talk about the Lab Topology of the “Advanced WAF Demo 
 
 ### BIG-IP Component
 
-  * `BIG-IP 17.0 - Machine Learning Demo`
+  * `BIG-IP 17.0`
 
 ### On this BIG-IP you can run following Demos:
 
@@ -55,7 +55,6 @@ In this module, we will talk about the Lab Topology of the “Advanced WAF Demo 
   * Transparent WAF Policy
   * Bot Defense
   * Behavioral DoS
-  * DAST Integration
   * Login Page protection
 
 
