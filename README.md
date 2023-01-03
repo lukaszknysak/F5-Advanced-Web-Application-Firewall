@@ -49,7 +49,7 @@ In this module, we will talk about the Lab Topology of the “Advanced WAF Demo 
 
   * `BIG-IP 17.0 - Machine Learning Demo`
 
-### On this BIG-IP you can run Demos on following purposes:
+### On this BIG-IP you can run following Demos:
 
   * Device ID+
   * IP Intelligence
