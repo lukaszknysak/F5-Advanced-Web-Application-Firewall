@@ -29,9 +29,24 @@ The intend is to provide demos on the following content:
   * Module 3: Offline Machine Learning
   * Module 4: Protecting Credentials with DataSafe
 
+# Getting to Know the Environment
+
+The F5 Advanced Web Application Firewall Solutions lab is the cornerstone of the Security SME team’s continuing effort to educate F5ers, partners, and customers on ways to efficiently use F5 AWF. This Blueprint is comprised of multiple components including Windows Jumphost, Kali Linux, Docker Enviroment…just to name a few. This blueprint is under content revision in hopes to add additional capabilities for others to either consume existing solutions or to build new solutions that can be shared with the community.
+
+
+#
+#
+#
+#
 # WAF - Getting started with WAF, Bot Detection and Threat Campaigns
 
-
+#
+#
+#
+#
+#
+#
+#
 
 This class will focus on a best practice approach to getting started with F5 WAF and application security. This introductory class will give you guidance on deploying WAF services in a successive fashion. This 141 class focuses entirely on the negative security model aspects of WAF configuration.  
 This is the 1st class in a three part lab series (141,241,341) based on: [Succeeding with Application Security](https://support.f5.com/csp/article/K07359270) which closely maps to this visualization of layered Application Security.
