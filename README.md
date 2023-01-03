@@ -95,14 +95,27 @@ Expected time to complete: 30 minutes
 
 ## Exercise 1.1: Transparent Policy
 ### Objective
-We created a transparent policy way back in Lab 1 to configure Geolocation enforcement & Layer 7 XFF inspection for IPI. We then tested out the Threat Campaign signatures in Lab 3 and now we will explore and test some of the other components that should be in scope for enforcement early on in your WAF deployment.
 
+  * Create your first WAF Policy
   * Review Learning & Blocking & Policy Building Process settings
   * Implement HTTP Protocol Compliancy checks and test
   * Test with a HTTP Protocol violation plus XSS attack
   * Enable Server Technologies & Attack Signatures
   * Review Reporting
   * Estimated time for completion 30 minutes.
+
+**We will now configure a Layer 7 WAF policy to inspect the X-Forwarded-For HTTP Header.**
+
+### Create your WAF Policy
+1. Navigate to **Security > Application Security > Security Policies** and click the Plus (+) button.
+2. Name the policy: **webgoat_waf**
+3. Select Policy Template: **Rapid Deployment Policy** (accept the popup)
+4. Select Virtual Server: **insecureApp1_vs**
+5. Logging Profiles: **Log all requests**
+6. Notice that the Enforcement Mode is already in **Transparent Mode** and Signature Staging is **Enabled**
+7. Click **Save**.
+![image](https://user-images.githubusercontent.com/38420010/119353162-d76e8380-bca2-11eb-90bb-0daf3cd54a9a.png)
+
 
 ### Learning & Blocking
 Recall from Lab 1, that we used the Rapid Deployment Policy template to create our policy and we deployed it in manual learning mode. This means as violations and/or false positives occur, the system will make suggestions to modify the policy. The admin will manually evaluate the suggestions and Approve, Ignore or Delete them.
@@ -239,6 +252,7 @@ username=f5student&password=[password]
 # Module 1: IP Intelligence
 Expected time to complete: 30 minutes
 
+We created a transparent policy way back in Lab 1 to configure Transparent WAF Policy. We then tested out standard signatures  and now we will explore and test some of the other components that should be in scope for enforcement early on in your WAF deployment.
 
 ## Exercise 1.1: IP Intelligence Policies
 ### Objective
@@ -246,7 +260,7 @@ Expected time to complete: 30 minutes
   * Configure Global IPI Profile & Logging
   * Review Global IPI Logs
   * Configure Custom Category and add an IP
-  * Create your first WAF Policy and implement IPI w/ XFF inspection
+  * Implement IPI w/ XFF inspection
   * Estimated time for completion: 30 minutes.
 
 ### Create Your 1st L3 IPI Policy
@@ -317,17 +331,6 @@ In this first lab, we will start by enabling a Global IPI Policy; much like you 
 **To recap, you have just configured a Global IP Intelligence policy and added a custom category.
 This policy is inspecting Layer 3 only and is a best-practice first step to securing your Application traffic.**  
   
-**We will now configure a Layer 7 WAF policy to inspect the X-Forwarded-For HTTP Header.**
-
-### Create your WAF Policy
-1. Navigate to **Security > Application Security > Security Policies** and click the Plus (+) button.
-2. Name the policy: **webgoat_waf**
-3. Select Policy Template: **Rapid Deployment Policy** (accept the popup)
-4. Select Virtual Server: **insecureApp1_vs**
-5. Logging Profiles: **Log all requests**
-6. Notice that the Enforcement Mode is already in **Transparent Mode** and Signature Staging is **Enabled**
-7. Click **Save**.
-![image](https://user-images.githubusercontent.com/38420010/119353162-d76e8380-bca2-11eb-90bb-0daf3cd54a9a.png)
 
 ### Configure L7 IPI
 1. Navigate to **Security > Application Security > Policy Building > Learning and Blocking Settings** and expand the **IP Addresses and Geolocations** section.
