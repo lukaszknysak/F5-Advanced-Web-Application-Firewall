@@ -39,7 +39,13 @@ The F5 Advanced Web Application Firewall Solutions lab is the cornerstone of the
 In this module, we will talk about the Lab Topology of the “Advanced WAF Demo v16 + LCC, ML and Device ID+” UDF Blueprint.
 
 **Note**
+
 `You´ll find different BIG-IPs inside the Blueprint. To maintain the Blueprint and introduce features which are EA, its easier to approach different BIG-IPs rather then configuring the solutions on one BIG-IP.`
+
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This BIG-IP mainly used to Demo <em>Offline Machine Learning</em>. The feature <em>Offline Machine Learning</em> is currently in Beta.</p>
+</div>
 
 Lab Topology:
 
