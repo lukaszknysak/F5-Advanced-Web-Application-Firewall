@@ -12,10 +12,9 @@ The intend is to provide demos on the following content:
   * Module 2: How to Deploy a Solution
 
 ### Class 1 - Getting started with WAF, Bot Detection and Threat Campaigns
-  * Module 1: IP Intelligence
-  * Module 2: Bot Detection Lab
+  * Module 1: Transparent WAF Policy
+  * Module 2: IP Intelligence
   * Module 3: Threat Campaigns
-  * Module 4: Transparent WAF Policy
 
 ### Class 2 - Elevated WAF Protection
   * Module 1: Bot Defense
