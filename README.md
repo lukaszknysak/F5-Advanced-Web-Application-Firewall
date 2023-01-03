@@ -20,10 +20,8 @@ The intend is to provide demos on the following content:
 ### Class 2 - Elevated WAF Protection
   * Module 1: Bot Defense
   * Module 2: Behavioral DOS Protection
-  * Module 3: DAST Integrations
-  * Module 4: Login Page Protection
 
-### Class 3 - Advanced Protection and Positive Security
+### Class 3 - Advanced Protection
   * Module 1: Leaked Credential Check - Credential Stuffing
   * Module 2: Check how Application Traffic Insights works
   * Module 3: Offline Machine Learning
