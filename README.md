@@ -62,11 +62,7 @@ In this module, we will talk about the Lab Topology of the “Advanced WAF Demo 
 This class will focus on a best practice approach to getting started with F5 WAF and application security. This introductory class will give you guidance on deploying WAF services in a successive fashion. This 141 class focuses entirely on the negative security model aspects of WAF configuration.  
 This is the 1st class in a three part lab series (141,241,341) based on: [Succeeding with Application Security](https://support.f5.com/csp/article/K07359270) which closely maps to this visualization of layered Application Security.
 
-![image](https://user-images.githubusercontent.com/51786870/210353749-34a43896-ec6d-4644-9423-ff55c786e772.png)
 
-
-
-![image](https://user-images.githubusercontent.com/38420010/119345353-0da70580-bc99-11eb-94fe-59eabaf3c240.png)
 
 ## Lab Environment & Topology
 
