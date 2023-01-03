@@ -5,27 +5,27 @@ This series of lab exercises is intended to explain and demonstrate key features
 
 Our intend is to proviode insights on how to provide demos on the following content:
 
-Getting to Know the Environment
-Module 1: Lab Topology
-Module 2: How to Deploy a Solution
+### Getting to Know the Environment
+  * Module 1: Lab Topology
+  * Module 2: How to Deploy a Solution
 
-Class 1 - Getting started with WAF, Bot Detection and Threat Campaigns
-Module 1: IP Intelligence
-Module 2: Bot Detection Lab
-Module 3: Threat Campaigns
-Module 4: Transparent WAF Policy
+### Class 1 - Getting started with WAF, Bot Detection and Threat Campaigns
+  * Module 1: IP Intelligence
+  * Module 2: Bot Detection Lab
+  * Module 3: Threat Campaigns
+  * Module 4: Transparent WAF Policy
 
-Class 2 - Elevated WAF Protection
-Module 1: Bot Defense
-Module 2: Behavioral DOS Protection
-Module 3: DAST Integrations
-Module 4: Login Page Protection
+### Class 2 - Elevated WAF Protection
+  * Module 1: Bot Defense
+  * Module 2: Behavioral DOS Protection
+  * Module 3: DAST Integrations
+  * Module 4: Login Page Protection
 
-Class 3 - Advanced Protection and Positive Security
-Module 1: Leaked Credential Check - Credential Stuffing
-Module 2: Check how Application Traffic Insights works
-Module 3: Offline Machine Learning
-Module 4: Protecting Credentials with DataSafe
+### Class 3 - Advanced Protection and Positive Security
+  * Module 1: Leaked Credential Check - Credential Stuffing
+  * Module 2: Check how Application Traffic Insights works
+  * Module 3: Offline Machine Learning
+  * Module 4: Protecting Credentials with DataSafe
 
 # WAF - Getting started with WAF, Bot Detection and Threat Campaigns
 
