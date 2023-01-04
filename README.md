@@ -201,13 +201,16 @@ We use Rapid Deployment Policy template to create our policy and we deploy it in
 ![image](https://user-images.githubusercontent.com/51786870/210513154-ea99ad4c-e208-41a3-9946-0dc1d9f7a70e.png)
 
 11. Click on the Element Name (blue hyperlink) **No Host header in HTTP/1.1** request This takes you to the Learning and Blocking Settings screen where the check was enabled.
+
 ![image](https://user-images.githubusercontent.com/51786870/210513288-065f6352-598a-40f2-baef-fa9f8bd1a111.png)
+
 12 Notice that by default in the Rapid Deployment Policy, learning is enabled for most of the common HTTP Protocol compliancy checks. Also notice that the **Enable** checkbox next to **No Host header in HTTP/1.1** request is now checked.
 13. Uncheck the **Learn box** for this violation then **Save** and **Apply** policy.
 
 ![image](https://user-images.githubusercontent.com/51786870/210513440-b6dfe3b0-e7d3-4cde-b2fd-996c732d1346.png)
 
 14. Open a Kali linux Web Shell from the UDF platform, and send the following request. This request is being sent without a host header and should now raise a violation in our Event Log rather than a learning suggestion.
+
 ```bash
 curl -k -H 'Host:' http://10.1.10.58/
 ```
@@ -225,13 +228,19 @@ One thing you can do to greatly increase the integrity of the learning suggestio
 
 1. Go to **Security > Application Security > Policy Building > Learning and Blocking Settings** and expand the **Policy Building Process** section at the bottom. Here you can see settings that this particular policy is using for learning. Enable "**Advanced**" view. Notice that **Trusted IP Addresses List** is empty.
 2. Click the little window/arrow icon next to **Trusted IP Addresses** List is empty.
+
 ![image](https://user-images.githubusercontent.com/51786870/210515220-b4ba2d3c-8db0-4a00-963c-c872b1c0b374.png)
+
 3. This takes you to: **Security > Application Security > IP Addresses > IP Address Exceptions**. Click **Create**.
 4. For IP Address: **10.0.0.0** and for Netmask: **255.0.0.0**. Check the box for **Policy Builder trusted IP** and click **Add** and **Apply Policy**.
+
 ![image](https://user-images.githubusercontent.com/51786870/210515429-3cfcc6ad-14b0-44d1-b7c2-d2db7d9d5821.png)
+
 5. Navigate back to **Security > Application Security > Policy Building > Learning and Blocking Settings** and expand the **Policy Building Process** section. Notice that our newly defined network is now a **Trusted IP**. This will greatly enhance the speed and quality of learning suggestions.
 6. Change the view from Basic to Advanced and review all the fine-grained configurations for the **Policy Building Process**.
+
 ![image](https://user-images.githubusercontent.com/38420010/119369972-0beb3b00-bcb5-11eb-9cf4-c368a7172654.png)
+
 **You now know how to define a trusted ip and configure the policy building process settings**
 
 ### Burp’ing the App
@@ -239,6 +248,7 @@ In this section we are going to use the free/community version of an excellent D
 
 ### Accept the Remaining Learning Suggestions
 Go to **Security > Application Security > Policy Building > Traffic Learning** and select all of the remaining suggestions and click **Accept > Accept suggestions** and then **Apply Policy**.
+
 ![image](https://user-images.githubusercontent.com/51786870/210516002-469b26b5-1f07-46a6-92ef-8af052c88dea.png)
 
 ### HTTP Compliancy Check - Bad Host Header Value
@@ -247,7 +257,9 @@ The **Bad Host Header Value** check is an HTTP Parser Attack and definitely some
 **Risk**: If we allow bad host header values they can be used to Fuzz web servers and gather system information. Successful exploitation of this attack could allow for the execution of XSS arbitrary code.
 
 1. Launch **Burp** from the Desktop. **Do Not click multiple times. It takes a few moments to load**.
+
 ![image](https://user-images.githubusercontent.com/51786870/210516327-76bfb7ad-7b47-47c2-8c14-f7a7d46b3287.png)
+
 2. **DO NOT update.**
 3. Choose **Temporary Project** and click **Next** and then click **Start Burp**.
 
@@ -271,8 +283,10 @@ username=student@f5demo.com&password=student
 ```
 
 ![image](https://user-images.githubusercontent.com/51786870/210516998-8b436fc6-da42-4043-8a99-6d5053e8f337.png)
+
 7. Back in Advanced WAF, browse to **Security > Event Logs > Application > Requests** and review the alert for this Sev5 attack. Note the alert severity is much higher (5) for this attack type due to several violations occuring including HTTP protocol Violations and several XSS signatures.
 8. Review all the details and then click the 3 under the **Attack Signature Detected** violation to see all of the staged XSS Attack Signatures that were triggered.
+
 ![image](https://user-images.githubusercontent.com/51786870/210517143-d77e7f19-9997-4cd0-b4a9-ce0ce56fb449.png)
 
 ### Server Technologies & Attack Signatures
@@ -281,7 +295,9 @@ In this final exercise we will examine server technologies which allow you to au
 1. Go to **Security > Application Security > Policy Building > Learning and Blocking Settings > Attack Signatures**
 2. Review the Attack Signatures that were applied during policy creation from back in Lab 1. **Generic Detection Signatures (High/Medium Accuracy)**. Notice that they are set to **Learn/Alarm/Block** and **Staging** is enabled.
 3. Locate Server Technologies and expand the option. Click **Enable Server Technology Detection**, click **Save** and then click the **New Window Icon** next to Server Technologies.
+
 ![image](https://user-images.githubusercontent.com/51786870/210517472-f3b74877-9882-46ff-9a50-d627394e036c.png)
+
 4. Scroll down to Advanced Settings > Server Technologies and click in the box. Search for Linux since we know the server is running Linux. The system will display a box describing which new signature sets will be applied. Click Confirm.
 
 ![image](https://user-images.githubusercontent.com/51786870/210517725-420aff8b-5893-4d5f-936a-db18a859ad4b.png)
@@ -316,7 +332,6 @@ username=student@f5demo.com&password=student
 2. Browse to **Security > Event Logs > Application > Requests** and look for the most recent Sev5 Event. Select the event, review the violations and click the 2 under Occurrences for the Attack signature detected violation.
 
 ![image](https://user-images.githubusercontent.com/51786870/210518293-2c1ce688-5905-4d25-b737-7638fdc3f0f4.png)
-
 
 3. Click the little blue i and review the Attack Signature Details. We can see that this was a Systems based Unix/Linux Signature in staging mode.
 ![image](https://user-images.githubusercontent.com/51786870/210518444-c44a12c2-b2b2-4078-a887-9d84f13dc9b6.png)
