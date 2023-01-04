@@ -65,11 +65,11 @@ This is the 1st class in a three part lab series (141,241,341) based on: [Succee
 
 ## Lab Environment & Topology
 
-`All work is done from the Linux Client, which can be accessed via RDP (Remote Desktop Client) or SSH. No installation or interaction with your local system is required.`
+`All work is done from the Windows Client, which can be accessed via RDP (Remote Desktop Client) or SSH. No installation or interaction with your local system is required.`
 
 ### Environment
   
-Linux Client:  
+Windows Client:  
   
   * BURP Community Edition - Packet Crafting
   * curl - command line webclient. Very useful for debugging and request crafting
@@ -77,7 +77,7 @@ Linux Client:
   
 Linux server:  
   
-  * WebGoat - deliberately insecure application that allows interested developers just like you to test vulnerabilities commonly found in Java-based applications
+  * Juice Shop running as a container on "Docker + Hackazon for LCC" virtual machine - deliberately insecure application that allows interested developers just like you to test vulnerabilities commonly found in Java-based applications
 
 ### Lab Topology
   
@@ -103,6 +103,48 @@ Expected time to complete: 30 minutes
   * Enable Server Technologies & Attack Signatures
   * Review Reporting
   * Estimated time for completion 30 minutes.
+
+**We will now run the backend app Juice Shop on "Docker + Hackazon for LCC" virtual machine**
+1. Navigate to the Web Shell of "Docker + Hackazon for LCC" from the browser after logging in to UDF platform
+
+![image](https://user-images.githubusercontent.com/51786870/210506000-696e00a5-7c85-49f3-b991-051697d061bf.png)
+
+2. Run a container with the Juice Shop application with commands below
+
+`docker pull bkimminich/juice-shop`
+
+![image](https://user-images.githubusercontent.com/51786870/210506537-4f12c0be-57f8-4fea-b26c-97283a7dfe0c.png)
+
+`docker run --rm -p 3000:3000 bkimminich/juice-shop`
+
+![image](https://user-images.githubusercontent.com/51786870/210506727-97ed1d9a-c034-47f8-8ade-11386c710f3f.png)
+
+
+3. Configure a pool **juiceshop_pool** on BIGIP (**https://10.1.1.9**) using that service as a pool member (**10.1.20.5:3000**)
+
+4. Navigate to **Local Traffic > Pools > Pool List** and click **Create**
+
+![image](https://user-images.githubusercontent.com/51786870/210507341-b9e53b9d-052a-4b9a-969d-f9b7f1eeb83a.png)
+
+5. Go to **Local Traffic > Virtual Servers > Virtual Server List** and modify the **destinaion IP address of "vs_Hackazon_II" to 10.1.10.101**
+
+![image](https://user-images.githubusercontent.com/51786870/210507867-6848c58b-33b0-4dd5-83c7-eaf4eac91cbe.png)
+
+7. Go to **Local Traffic > Virtual Servers > Virtual Server List** and click **Create**. Create a virtual server with the settings below 
+
+![image](https://user-images.githubusercontent.com/51786870/210508519-383a893c-0c58-4d9d-af40-b8f4cb6e9b35.png)
+
+
+![image](https://user-images.githubusercontent.com/51786870/210508408-eacb21f4-8fa8-44ba-9fc4-a2284ef5f16b.png)
+
+
+9. 
+10. click **Create**
+
+
+
+1. Navigate to **Security > Application Security > Security Policies** and click the Plus (+) button.
+2. Name the policy: **webgoat_waf**
 
 **We will now configure a Layer 7 WAF policy to inspect the X-Forwarded-For HTTP Header.**
 
