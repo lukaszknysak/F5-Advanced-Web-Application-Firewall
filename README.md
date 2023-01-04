@@ -137,9 +137,24 @@ Expected time to complete: 30 minutes
 
 ![image](https://user-images.githubusercontent.com/51786870/210508408-eacb21f4-8fa8-44ba-9fc4-a2284ef5f16b.png)
 
+![image](https://user-images.githubusercontent.com/51786870/210508814-db77afce-47e5-47ea-a8a5-01721eaacc37.png)
 
-9. 
-10. click **Create**
+
+8. Search for Notepad tool, right click on the app and click "Run as administrator"
+
+![image](https://user-images.githubusercontent.com/51786870/210509098-bea6b633-bc85-4d9c-8c19-2301d0a67ec1.png)
+
+9. Open hosts file and add an entry with the value of  juiceshop.f5demo.com and IP address of 10.1.10.58. Do not delete hackazon.f5demo.com.
+
+![image](https://user-images.githubusercontent.com/51786870/210509358-9b2087ab-a9f6-438d-8d65-4345191e00fc.png)
+
+![image](https://user-images.githubusercontent.com/51786870/210509454-ac816cc4-7d6f-40af-a8a8-47aa4b395363.png)
+
+
+10.
+
+
+11. click **Create**
 
 
 
