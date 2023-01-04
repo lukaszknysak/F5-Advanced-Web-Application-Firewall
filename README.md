@@ -178,48 +178,57 @@ We use Rapid Deployment Policy template to create our policy and we deploy it in
 ![image](https://user-images.githubusercontent.com/51786870/210511011-e0cbfe72-b2de-41c1-a355-9697036f1f8c.png)
 
 
-3. Next click on **"Not yet a customer?"** and register new user: "student@f5demo.com" with the password **"student"**
+3. Next click on **"Not yet a customer?"** and register new user: "student@f5demo.com" with the password **"student"** and Browse around the site and perform several actions as a real user would.
 
 ![image](https://user-images.githubusercontent.com/51786870/210511160-5d940ac8-c19b-47a6-8072-7f4f751d030a.png)
 
 ![image](https://user-images.githubusercontent.com/51786870/210511528-5d2b7a89-5109-460a-8598-659d9891ce10.png)
 
+4. Click back on the Advanced WAF GUI tab in your browser and refresh the traffic learning screen. If you navigated away or closed the tab, open a new one, login to Advanced WAF and go to: **Security > Application Security > Policy Building > Traffic Learning**.
 
-4. 
-5.   **Register new user**, create account and Browse around the site and perform several actions as a real user would.
-6. Click back on the Advanced WAF GUI tab in your browser and refresh the traffic learning screen. If you navigated away or closed the tab, open a new one, login to Advanced WAF and go to: **Security > Application Security > Policy Building > Traffic Learning**.
-7. You will see many Suggestions and a learning score that the system assigns based on how many times it has seen an occurence and from what source. You can **Accept, Delete, Ignore** or **Export** the suggestion.
+5. You will see many Suggestions and a learning score that the system assigns based on how many times it has seen an occurence and from what source. You can **Accept, Delete, Ignore** or **Export** the suggestion.
 `This is where it usually starts to get a little dicey for a first-time WAF admin. Always look very carefully at the suggested action before deciding on which action to take. It is also helpful to define a whitelist so that the policy can learn quicker and from known trusted sources. You generally do not want the system learning from random and/or hostile Internet traffic and making suggestions to relax the policy.`
-5. Notice that most of the learning suggestions involve enabling various HTTP protocol Compliance Checks.
-6. Find and select the suggestion for **Enable HTTP protocol compliance check - HTTP Check: No Host header in HTTP/1.1 request**.
-7. Review the **Suggested Action** and click **Accept** and **Apply Policy**.
-![image](https://user-images.githubusercontent.com/38420010/119366527-5c609980-bcb1-11eb-905c-b6cc4af0f8c9.png)
-8. What just happened and how do you see what changed by who and when? Audit Log of course!
-9. Go to **Security > Application Security > Audit > Log** and review the most recent actions. You can see who, what and when every component within a policy was modified. (This step is not necessary but meant to draw your attention to the audit log)
-10. Click on the Element Name (blue hyperlink) **No Host header in HTTP/1.1** request This takes you to the Learning and Blocking Settings screen where the check was enabled.
-![image](https://user-images.githubusercontent.com/38420010/119367381-2e2f8980-bcb2-11eb-9e3e-7d4ed4d810f7.png)
-11 Notice that by default in the Rapid Deployment Policy, learning is enabled for most of the common HTTP Protocol compliancy checks. Also notice that the **Enable** checkbox next to **No Host header in HTTP/1.1** request is now checked.
-![image](https://user-images.githubusercontent.com/38420010/119367463-44d5e080-bcb2-11eb-9622-6311a4ecb57c.png)
-12. Uncheck the **Learn box** for this violation then **Save** and **Apply** policy.
-13. Open a new Terminal and send the following request. This request is being sent without a host header and should now raise a violation in our Event Log rather than a learning suggestion.
+6. Notice that most of the learning suggestions involve enabling various HTTP protocol Compliance Checks.
+7. Find and select the suggestion for **Enable HTTP protocol compliance check - HTTP Check: No Host header in HTTP/1.1 request**.
+
+![image](https://user-images.githubusercontent.com/51786870/210512098-9c8236d7-bba6-47db-8840-486883d963cb.png)
+
+8. Review the **Suggested Action** and click **Accept** and **Apply Policy**.
+
+9. What just happened and how do you see what changed by who and when? Audit Log of course!
+10. Go to **Security > Application Security > Security Policies > Policies List**, click **juiceshop_policy**, go to **Audit Log** tab and review the most recent actions. You can see who, what and when every component within a policy was modified. (This step is not necessary but meant to draw your attention to the audit log)
+
+![image](https://user-images.githubusercontent.com/51786870/210513154-ea99ad4c-e208-41a3-9946-0dc1d9f7a70e.png)
+
+11. Click on the Element Name (blue hyperlink) **No Host header in HTTP/1.1** request This takes you to the Learning and Blocking Settings screen where the check was enabled.
+![image](https://user-images.githubusercontent.com/51786870/210513288-065f6352-598a-40f2-baef-fa9f8bd1a111.png)
+12 Notice that by default in the Rapid Deployment Policy, learning is enabled for most of the common HTTP Protocol compliancy checks. Also notice that the **Enable** checkbox next to **No Host header in HTTP/1.1** request is now checked.
+13. Uncheck the **Learn box** for this violation then **Save** and **Apply** policy.
+
+![image](https://user-images.githubusercontent.com/51786870/210513440-b6dfe3b0-e7d3-4cde-b2fd-996c732d1346.png)
+
+14. Open a Kali linux Web Shell from the UDF platform, and send the following request. This request is being sent without a host header and should now raise a violation in our Event Log rather than a learning suggestion.
 ```bash
-curl -k -H 'Host:' https://10.1.10.145/
+curl -k -H 'Host:' http://10.1.10.58/
 ```
-14. Review the **Alarmed request in Security > Event Logs > Application > Requests**.
-![image](https://user-images.githubusercontent.com/38420010/119367829-a5fdb400-bcb2-11eb-8b84-5c5a283e63cc.png)
-15. To review, you just took a learning suggestion and accepted it to enable a protocol compliancy check and then you disabled future learning suggestions for this event. Violations are now alarmed in the Event Logs.
+
+![image](https://user-images.githubusercontent.com/51786870/210514606-874dc305-c37d-4c36-8a0e-2a377c6eb06a.png)
+
+15. Review the **Alarmed request in Security > Event Logs > Application > Requests**.
+![image](https://user-images.githubusercontent.com/51786870/210514759-14261d2d-7e5b-478a-9a0a-65f6e6d06036.png)
+16. To review, you just took a learning suggestion and accepted it to enable a protocol compliancy check and then you disabled future learning suggestions for this event. Violations are now alarmed in the Event Logs.
 16. Go back to**Security > Application Security > Policy Building > Traffic Learning** You would now typically go through and enable all of the checks that the policy is recommending regarding http protocol compliance and evasion technique detection.
 `Remember that your policy is safely in transparent mode so accepting suggestions and enabling checks will only raise alarms and no blocking actions will occur. This is why it is very important to start off transparently until you fully understand the basics of managing a WAF policy.`
-
 
 ### Policy Building Process
 One thing you can do to greatly increase the integrity of the learning suggestions is, define trusted IP’s. You can also tell the system to Only learn from trusted IP’s which is a very wise thing to do if you are developing policy on an app that is exposed to untrusted or Internet traffic.
 
-1. Go to **Security > Application Security > Policy Building > Learning and Blocking Settings** and expand the **Policy Building Process** section at the bottom. Here you can see settings that this particular policy is using for learning. Notice that **Trusted IP Addresses List** is empty.
+1. Go to **Security > Application Security > Policy Building > Learning and Blocking Settings** and expand the **Policy Building Process** section at the bottom. Here you can see settings that this particular policy is using for learning. Enable "**Advanced**" view. Notice that **Trusted IP Addresses List** is empty.
 2. Click the little window/arrow icon next to **Trusted IP Addresses** List is empty.
+![image](https://user-images.githubusercontent.com/51786870/210515220-b4ba2d3c-8db0-4a00-963c-c872b1c0b374.png)
 3. This takes you to: **Security > Application Security > IP Addresses > IP Address Exceptions**. Click **Create**.
-4. For IP Address: **10.0.0.0** and for Netmask: **255.0.0.0**. Check the box for **Policy Builder trusted IP** and click **Create** and **Apply Policy**.
-![image](https://user-images.githubusercontent.com/38420010/119369870-f37b2080-bcb4-11eb-9ea0-2d0794b40455.png)
+4. For IP Address: **10.0.0.0** and for Netmask: **255.0.0.0**. Check the box for **Policy Builder trusted IP** and click **Add** and **Apply Policy**.
+![image](https://user-images.githubusercontent.com/51786870/210515429-3cfcc6ad-14b0-44d1-b7c2-d2db7d9d5821.png)
 5. Navigate back to **Security > Application Security > Policy Building > Learning and Blocking Settings** and expand the **Policy Building Process** section. Notice that our newly defined network is now a **Trusted IP**. This will greatly enhance the speed and quality of learning suggestions.
 6. Change the view from Basic to Advanced and review all the fine-grained configurations for the **Policy Building Process**.
 ![image](https://user-images.githubusercontent.com/38420010/119369972-0beb3b00-bcb5-11eb-9cf4-c368a7172654.png)
