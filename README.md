@@ -204,7 +204,8 @@ We use Rapid Deployment Policy template to create our policy and we deploy it in
 
 ![image](https://user-images.githubusercontent.com/51786870/210513288-065f6352-598a-40f2-baef-fa9f8bd1a111.png)
 
-12 Notice that by default in the Rapid Deployment Policy, learning is enabled for most of the common HTTP Protocol compliancy checks. Also notice that the **Enable** checkbox next to **No Host header in HTTP/1.1** request is now checked.
+12. Notice that by default in the Rapid Deployment Policy, learning is enabled for most of the common HTTP Protocol compliancy checks. Also notice that the **Enable** checkbox next to **No Host header in HTTP/1.1** request is now checked.
+
 13. Uncheck the **Learn box** for this violation then **Save** and **Apply** policy.
 
 ![image](https://user-images.githubusercontent.com/51786870/210513440-b6dfe3b0-e7d3-4cde-b2fd-996c732d1346.png)
