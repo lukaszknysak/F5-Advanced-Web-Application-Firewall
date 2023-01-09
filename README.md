@@ -1147,41 +1147,45 @@ Login to that BIG-IP instance to check the LCC configuration. The Password of th
 
 ![image](https://user-images.githubusercontent.com/51786870/211312381-d2ac1e53-01b2-476a-b799-dc7948b0a3c8.png)
 
-2. Login to Hackazon (demo1/demo1 or with the previous stolen cred), to show it works and that there is no Captcha.
+2. Login to Hackazon (demo33@fidnet.com/mountainman01 or with the previous stolen cred), to show it works and that you are not blocked.
 
-Try with a distributed attack. Here we simulate a Bot network sending a Credential Stuffing attack with thousand leaked credentials.
+3. Try with a distributed attack. Here we simulate a Bot network sending a Credential Stuffing attack with thousand leaked credentials.
 
-Enable ASM policy LCC on VS Hackazon_protected_virtual.
+   * Enable ASM policy **Leaked-Credential-Check** on VS **vs_Hackazon_IV**.
 
-SSH or use Web Shell of UDF Instance called kali.
+   * SSH or use Web Shell of UDF Instance called kali.
 
-Check you are in directory /home/ec2-user, else move to this directory.
+   * Check you are in directory /home/ec2-user, else move to this directory.
 
-Launch the Brute Force stuffing attack (be careful, copy paste does not work every time because of the “”).
+   * Launch the Brute Force stuffing attack (be careful, copy paste does not work every time because of the “”).
 
-hydra -C cred_list.txt -V -I 10.1.10.78 http-form-post "/user/login?return_url=:username=^USER^&password=^PASS^:S=My Account". This is the VS on the BIG-IP named Leaked Credential Check Demo.
+   * `hydra -C cred_list.txt -V -I 10.1.10.78 http-form-post "/user/login?return_url=:username=^USER^&password=^PASS^:S=My Account"`. 
 
-Keep attack on going and RDP to windows machine called win-client.
+   * Keep attack on going and RDP to windows machine called win-client.
 
-Launch Chrome and click Hackazon login bookmark.
+   * Launch Chrome and click Hackazon login bookmark.
 
-Login as demo1 / demo1, you should see a Captcha. You are a legitimate user, but the website is protecting itself. Proof you are a legitimate user by answering the CAPTCHA.
+   * Login as demo33@fidnet.com/mountainman01, you should be blocked. 
 
-Go to BIGIP and check Brute Force and cred stuffing logs Security > Event Logs > Application > Brute Force Attack.
+   * Go to BIGIP and check Brute Force and cred stuffing logs Security > Event Logs > Application > Brute Force Attack.
 
-../../_images/img_class3_module1_static_6b.gif
+![image](https://user-images.githubusercontent.com/51786870/211322275-3f162024-44b9-4b57-86cd-cd421fa719e2.png)
 
-Additional information
+![image](https://user-images.githubusercontent.com/51786870/211322402-8d3807ee-a59c-4414-b464-3e14e9c943b4.png)
+
+### Additional information
 
 The following cloud related commands could help to identify whether the cloud connection is working.
 
+`tmsh show security cloud-services application-stats`
 
-tmsh show security cloud-services application-stats
+![image](https://user-images.githubusercontent.com/51786870/211322665-aa274482-3152-4fec-bf5e-87ea085d6e8c.png)
 
-../../_images/img_class3_module1_static_7.gif
-tmctl app_cloud_security_service_stat
 
-../../_images/img_class3_module1_static_8.gif
+`tmctl app_cloud_security_service_stat`
+
+![image](https://user-images.githubusercontent.com/51786870/211322759-c8653438-ee0f-44f2-b1cd-a9a16c020070.png)
+
 
 
 # [Class 1 - Getting started with WAF, Bot Detection and Threat Campaigns](#class-1)
