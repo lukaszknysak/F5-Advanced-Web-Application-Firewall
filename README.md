@@ -563,25 +563,10 @@ These steps are necessary for this demonstration. In the “real world” having
 **Congratulations! You just completed Lab 3 and have continued your introductory knowledge to Advanced WAF with Threat Campaign Signatures. These powerful and highly-accurate signatures are a great first step into enforcing blocking as they produce virtually no false positives.**
 
 
-
-
-# [Class 1 - Getting started with WAF, Bot Detection and Threat Campaigns](#class-1)
-  * [Module 1: Transparent WAF Policy](#class-1-module-1)
-  * [Module 2: IP Intelligence](#class-1-module-2)
-  * [Module 3: Threat Campaigns](#class-1-module-3)
-
-# [Class 2 - Elevated WAF Protection](#class-2)
-  * [Module 1: Bot Defense](#class-2-module-1)
-  * [Module 2: Behavioral DOS Protection](#class-2-module-2)
-
-# [Class 3 - Advanced Protection](#class-3)
-  * [Module 1: Leaked Credential Check - Credential Stuffing](#class-3-module-1)
-  * [Module 2: Check how Application Traffic Insights works](#class-3-module-2)
-  * [Module 3: Offline Machine Learning](#class-3-module-3)
-  * [Module 4: Protecting Credentials with DataSafe](#class-3-module-4)
+# Class 2
 
 # Class 2 Module 1
-# Module 2: Bot Defense
+# Module 1: Bot Defense
 Expected time to complete: 20 minutes
 
 ## Exercise 2.1: Bot Defense with Signatures
@@ -669,4 +654,3 @@ The next logical step in our configuration is to deal with automated traffic. Wh
   * [Module 2: Check how Application Traffic Insights works](#class-3-module-2)
   * [Module 3: Offline Machine Learning](#class-3-module-3)
   * [Module 4: Protecting Credentials with DataSafe](#class-3-module-4)
-
