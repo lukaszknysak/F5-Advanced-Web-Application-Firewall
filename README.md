@@ -22,24 +22,24 @@ The intend is to provide demos on the following content:
 
 
 
-# [Getting to Know the Environment]
+# [Getting to Know the Environment](#getting-to-know-the-environment)
   * [Module 1: Lab Topology]
   * [Module 2: How to Deploy a Solution]
 
-# [Class 1 - Getting started with WAF, Bot Detection and Threat Campaigns]
-  * [Module 1: Transparent WAF Policy]
-  * [Module 2: IP Intelligence]
-  * [Module 3: Threat Campaigns]
+# [Class 1 - Getting started with WAF, Bot Detection and Threat Campaigns](#class-1)
+  * [Module 1: Transparent WAF Policy](#class-1-module-1)
+  * [Module 2: IP Intelligence](#class-1-module-2)
+  * [Module 3: Threat Campaigns](#class-1-module-3)
 
-# [Class 2 - Elevated WAF Protection]
-  * [Module 1: Bot Defense]
-  * [Module 2: Behavioral DOS Protection]
+# [Class 2 - Elevated WAF Protection](#class-2)
+  * [Module 1: Bot Defense](#class-2-module-1)
+  * [Module 2: Behavioral DOS Protection](#class-2-module-2)
 
-# [Class 3 - Advanced Protection]
-  * [Module 1: Leaked Credential Check - Credential Stuffing]
-  * [Module 2: Check how Application Traffic Insights works]
-  * [Module 3: Offline Machine Learning]
-  * [Module 4: Protecting Credentials with DataSafe]
+# [Class 3 - Advanced Protection](#class-3)
+  * [Module 1: Leaked Credential Check - Credential Stuffing](#class-3-module-1)
+  * [Module 2: Check how Application Traffic Insights works](#class-3-module-2)
+  * [Module 3: Offline Machine Learning](#class-3-module-3)
+  * [Module 4: Protecting Credentials with DataSafe](#class-3-module-4)
 
 
 # Getting to Know the Environment
