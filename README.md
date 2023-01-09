@@ -635,7 +635,125 @@ The next logical step in our configuration is to deal with automated traffic. Wh
 2. Navigate to **Security > Event Logs > Bot Defense > Bot Requests** and review the event logs.
 3. All the **Unknown** bots are getting rate-limited and the known browsers that do not match the appropriate signatures, such as the spoofed Safari request in this example, are being marked as **Suspicious or Malicious**.
 
-**This completes Lab 1**
+## Exercise 2.2: More Bot Mitigation Techniques
+
+In this Lab we want to get familar with all the additional features avaialble for Bot Defense. The goal is to understand the difference between signature-based and JavaScript-based Detection capabilities and mitigation options.
+
+**Important**
+`To only focus on Bot Defense, we will use the "vs_websrv_01_Bot" virtual server for this, because there is no WAF policy attached to it. If you wanna use a different VS, please make sure that there is no WAF policy active.`
+
+![image](https://user-images.githubusercontent.com/51786870/211288466-68ce986b-adb6-4177-8f32-69bbd6fb8bbb.png)
+
+
+### Create Logging Profile
+
+1. Navigate to **Security > Event Logs > Logging Profiles** and create a new Logging Profile with the settings shown in the screenshot below (local publisher with all options enabled).
+
+2. Give it a name and click **Create**.
+
+![image](https://user-images.githubusercontent.com/51786870/211288619-7a5120c7-f7de-4bde-ad74-37f18888ee4d.png)
+
+### Create Bot Defense Profile
+
+1. Navigate to **Security > Bot Defense > Bot Defense Profiles** and click **Create**.
+
+2. Choose a name (e.g. mybotprofile) and set the Enforcement mode to **Blocking**.
+
+![image](https://user-images.githubusercontent.com/51786870/211288705-06eb5222-3f35-4458-bf95-0db40b7525f8.png)
+
+3. Go to **Mitigation Settings** and change it as seen in the picture below. Leave all other settings as default.
+
+![image](https://user-images.githubusercontent.com/51786870/211288762-465e1c6a-5bf1-4864-91f4-954b6b0a3d7c.png)
+
+4. Go to **Browsers** and make sure that **Browser Verification and Device ID Mode** are **disabled (none)**. Leave all other settings as default.
+
+![image](https://user-images.githubusercontent.com/51786870/211288849-37afe8ef-2709-4178-834b-d8437d4684f3.png)
+
+5. Click Save
+
+
+### Enable Bot Defense and Logging
+
+1. Navigate to **Security > Overview** and select the "**vs_websrv_01_Bot**" Virtual Server
+
+2. Click on **Attach** and select **Bot Defense Profile**.
+
+![image](https://user-images.githubusercontent.com/51786870/211288992-0bd53e74-35b8-4b50-8dc8-cc127f67e031.png)
+
+3. Choose the profile you’ve just created and click **Attach**
+
+![image](https://user-images.githubusercontent.com/51786870/211289034-d1cb63dd-f89e-49b8-9d8d-dbf0739192e4.png)
+
+4. Do the same for the **Logging Profile** and use the profile you’ve just created.
+
+### Create and review simple Bot-Requests
+
+We will use the “win-client” virtual machine provided by this deployment to create simple Bot-Requests.
+
+1. Open the RDP session if you haven't done so.
+
+![image](https://user-images.githubusercontent.com/51786870/211289245-542a9ca6-810a-47a8-aeb0-5e62e74adda2.png)
+
+2. Double-click on the "**02-Simple-Bot-and-impersonating.bat**" batch file located on the desktop. This will generate three different requests.
+
+![image](https://user-images.githubusercontent.com/51786870/211289339-fe4ff4c0-b17b-486e-9d8b-924be9a2707b.png)
+
+3. Go back to the TMUI and click on: **Security > Event Logs > Bot Defense > Bot Requests**
+
+![image](https://user-images.githubusercontent.com/51786870/211289417-a0c35800-7b21-4831-b438-108a7ee48c30.png)
+
+4. Review all (three) logs and see the “**block**” reason for each request. All requests where classified as malicious bots with the attempt to masquerade as a good bot (i.e. search bot).
+
+**Note**
+
+`All requests were made with curl and customized user agents to simulate different requests/attacks.`
+
+5. Go back to the Windows client and double-click on the "**03-Simple-Bot-masked-as-Chrome-Browser.bat**" batch file.
+
+![image](https://user-images.githubusercontent.com/51786870/211289976-e8f6cd1e-d5a5-4e99-a77a-0ee226d62dd4.png)
+
+6. Go back to the Eventlog and review the result for this request. As you can see both requests were classified as a valid Browser and were allowed. Lets see how we can get more accurate results.
+
+**Note**
+
+`One request was made with curl and a customized user agent, but the other one was made with a headless chrome and a customized user agent to simulate different bots but masked as valid browsers.`
+
+![image](https://user-images.githubusercontent.com/51786870/211290056-8367dbec-9434-462c-8745-1309b579e0f2.png)
+
+![image](https://user-images.githubusercontent.com/51786870/211290077-c65425a2-c171-44ab-8b7c-3deabb048c7e.png)
+
+
+7. Go to **Security > Bot Defense > Bot Defense Profiles** and select our Bot Defense Profile (**bot_websrv_01**)
+
+8. Within the profile go to **Browsers** and set "**Browser Verification**" to **Verify Before Access** and "**Device ID Mode**" to **Generate Before Access**.
+
+![image](https://user-images.githubusercontent.com/51786870/211290203-c3cf8e4b-c89e-4d44-b9f4-b99cc14330aa.png)
+
+9. Click **Save** and go back to the Windows Client RDP Session.
+
+10. Double-click again on the "**03-Simple-Bot-masked-as-Chrome-Browser.bat**" batch file and review the log entries in the TMUI.
+
+11. As you can see, one request (made with curl) was classified as "**suspicious Browser**" and the status is "**challenged**".
+
+![image](https://user-images.githubusercontent.com/51786870/211290434-fd39045d-2272-4397-954a-b86341a439fb.png)
+
+12. The second one (made with headless chrome and a customized user agent) was classified as "**Browser**" and also challenged. But this time the automated browser was able to solve the JS challenge and the request was allowed.
+
+![image](https://user-images.githubusercontent.com/51786870/211290497-ad6922cf-1554-4a29-8a4d-6f7272a7a75b.png)
+
+![image](https://user-images.githubusercontent.com/51786870/211290516-c11495a3-75ce-4aa4-864b-deec7bf04f4d.png)
+
+**Note**
+
+`This is not part of this LAB but it can be identified with the “CSHUI” part of Bot Defense (Client Side Human Intercation and Counting Anomalies”). It is based on ongoing checks, while the user browses through the application and is looking at HTML responses, for Mouse / Keyboard / Touch anomalies, Rapid surfing or session opening and many others.`
+
+**Note**
+
+`Shape Solutions can provide the same and even more accurate results because of the more advanced JS and the AI based classification.`
+
+
+
+**This completes Class 1**
   
 **Congratulations! You have just completed Lab 2 by implementing a signature based bot profile. Implementing bot signatures is the bare minimum for bot mitigation and not a comprehensive security strategy. This is a excellent step in getting started with WAF and will provide actionable information on automated traffic. You can use this information to take next steps such as implementing challenges and blocking mode. At a very minimum, share this information with your Application teams. Automated traffic can negatively affect the bottom line especially in cloud environments where it’s pay to play. See our 241 class on Elevated WAF Security for more info on advanced bot mitigation techniques.**
 
