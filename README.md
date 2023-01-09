@@ -89,7 +89,7 @@ The network topology implemented for this lab is very simple. The following comp
 1 x F5 BIG-IP VE (v16.0.1) running Advanced WAF with IP Intelligence & Threat Campaign Subscription Services.  
 1 x Ubuntu Linux 20.04 server.  
 
-
+# It is advised to make a UCS Archive file before modifying the configuration of the BIG-IP
 
 
 # Class 1
@@ -111,6 +111,9 @@ Expected time to complete: 30 minutes
   * Estimated time for completion 30 minutes.
 
 **We will now run the backend app Juice Shop on "Docker + Hackazon for LCC" virtual machine**
+
+# It is advised to make a UCS Archive file before modifying the configuration of the BIG-IP
+
 1. Navigate to the Web Shell of "Docker + Hackazon for LCC" from the browser after logging in to UDF platform
 
 ![image](https://user-images.githubusercontent.com/51786870/210506000-696e00a5-7c85-49f3-b991-051697d061bf.png)
@@ -758,9 +761,143 @@ We will use the “win-client” virtual machine provided by this deployment to 
 # Class 2 Module 2
 # Module 2: Behavioral DOS Protection
 
+In this lab you will run baseline tests as well as attacks against a Virtual Server to trigger Behavioral DoS
+Protection
+
+# Connect to the Lab Environment
+
+1. On the win-client, use a browser to reach the BIG-IP and login 
+2. From your host from UDF, open three terminals, one to the BIG-IP and two to the Kali Linux Client. Sessions should be already authenticated
+
+**BIGIP**
+
+![image](https://user-images.githubusercontent.com/51786870/211293748-a7b5e949-bed6-482b-84a1-b61f6b72d14c.png)
+
+**Kali**
+
+![image](https://user-images.githubusercontent.com/51786870/211294016-d5824528-e8ec-40b0-92a4-1bdbda5a2e87.png)
+
+**Note**
+
+`The kali client will be used as the attacker machine for this lab. You may want to open multiple
+terminal windows to go through the steps in the lab.`
+
+### Examine the DoS Profile
+
+1. In TMUI, go to **Local traffic > Virtual Servers > Virtual Server List > 	vs_Hackazon_I**
+
+2. Select the Security tab and then Policies. Make sure that DoS Profile and Log Profile are set up as below.
+
+![image](https://user-images.githubusercontent.com/51786870/211294497-0423c996-47e4-4f50-b1b1-31411084e161.png)
+
+3. Select the resources tab above. Note the **iRule** that is applied.
+
+![image](https://user-images.githubusercontent.com/51786870/211294610-fdc4ab30-9e7a-4428-9d57-3050d8a82665.png)
+
+
+**Note**
+
+`This is not a real world scenario. Attacks would typically come from a wide range of IP addresses. In this demo environment, we do not have dozens of good and bad source IPs available for clients and attackers. We simulate them by adding an iRule to the VS, which adds a randomized X-Forwarded-For header to each
+request. 
+
+4. Go back to the **Properties** tab and notice that the http profile is also customized. It is configured to accept XFF for the iRule to function correctly.
+
+5. Go to **Security > DoS Protection > DoS Profiles > Hackazon_BaDOS** and select the Application Security tab.
+
+![image](https://user-images.githubusercontent.com/51786870/211295958-fe2a131f-b56c-414e-95a3-37dcc9097df0.png)
+
+6. Select TPS-based Detection tab and ensure that it is turned off.
+
+![image](https://user-images.githubusercontent.com/51786870/211295894-27f498ab-574f-4e37-895c-9ec74cdf3d8c.png)
+
+**Note**
+
+`You do not have to Apply the Policy when editing a DoS Profile unlike typical changes under Application Security.`
+
+7. Select Behavioral and Stress-based Detection and click **Edit** under **Behavioral Detection and Mitigation**.
+
+![image](https://user-images.githubusercontent.com/51786870/211296296-9406ed3e-6ff0-4c0f-9310-a513111d9ce6.png)
+
+8. Notice that “**Use approved signatures only**” is unchecked. If checked, we would need to approve each dynamic signature. No need to edit, click **Close**.
+
+![image](https://user-images.githubusercontent.com/51786870/211296467-c6f2f07c-dade-44aa-bda4-fe9e46191e6f.png)
+
+9. The Behavioral DoS profile is already applied and ready to go. Move on to the next section to begin analyzing traffic.
+
+
+### Create Baseline traffic for the BIG-IP
+
+1. In one of the Kali Linux terminal sessions, change go to the scripts directory **cd /home/ec2-user** and take a look at bash scripts that have been created.
+
+![image](https://user-images.githubusercontent.com/51786870/211296861-00103005-018f-479c-9f99-dc4c65fc81da.png)
+
+2. As a first step we will use one of those scripts named **baseline_menu.sh** to generate legal traffic which will learn AWAF the baseline of the normal user traffic.
+
+3. In one of your **Kali Linux** terminal windows, examine your home directory and run the "**baseline_menu.sh**" script and select second option "**alternate**".
+
+`./baseline_menu.sh`
+
+![image](https://user-images.githubusercontent.com/51786870/211297673-12a7e352-30b2-463d-a44f-4fcdfb4d3be9.png)
+
+
+5. In a second Kali terminal window, run the script again, but select the other option.
+
+**Note**
+
+It does not matter which order is used here, and the results of baseline testing are not an exact science
+
+![image](https://user-images.githubusercontent.com/51786870/211297995-99bb9f7e-ae14-4144-badf-ee6e3438479a.png)
+
+
+6. Go back to your BIG-IP terminal window and run an admd command as shown below
+
+admd -s vs./Common/vs_Hackazon_I+/Common/Hackazon_BaDOS.info.learning
+
+**Note**
+
+`Given the parameters of the Virtual Server and the corresponding DOS profile, admd returns stats on traffic learning. We want to wait until the first number in the brackets is 90 or above. This represents the percentage confidence the system has in baseline traffic.`
+
+![image](https://user-images.githubusercontent.com/51786870/211298526-8b5a76d7-9edb-4911-8335-5431843c5142.png)
+
+Another screenshot of sample output below:
+
+![image](https://user-images.githubusercontent.com/51786870/211298905-e7b6d7ac-9c3c-4369-a054-ada2cacfa9a7.png)
+
+**Tip**
+
+`If your aren’t getting any output, or seeing no signs of accumulated signals, verify the name of the virtual server and profile in the admd command are accurate.`
+
+   * **1 - baseline_learning_confidence:**
+   * Description: in % how confident the system is in the baseline learning.
+   * Desired Value: > 90%
+   * **2 - learned_bins_count:**
+   * Description: number of learned bins
+   * Desired Value: > 0
+   * **3 - good_table_size:**
+   * Description: number of learned requests
+   * Desired Value: > 2000
+   * **4 - good_table_confidence:**
+   * Description: how confident, as %, the system is in the good table
+   * Desired Value: Must be 100 for signatures
+
+**Note**
+
+It may take 5 or more minutes before you begin to get learned baseline numbers. Also, the desired values are the minimum values we would like to see prior to triggering attacks as part of this lab exercise. You can, however, move onto module 3 and 4 in this lab while baselines are being established. Do not stop baseline traffic script
+
+To see all of the values available and wide range of interesting statistics, enter the following command from BIG-IP console:
+
+admd -s vs./Common/vs_hackazon_http
+To view Advanced Web Application Firewall layer 7 DoS log, enter the following command from BIG-IP console:
+
+tail -f /var/log/dosl7/dosl7d.log
+
+**Now it's time to review the configuration**
 
 
 
+
+
+Below is output that has reached 88% then 92%.
 
 
 
