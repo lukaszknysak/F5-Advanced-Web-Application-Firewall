@@ -1391,9 +1391,54 @@ Within this Demo we will use Postman Runner to simulate requests coming from dif
 
 
 
-# Class 3 Module 2
-# Module 2: Check how Application Traffic Insights works
+# Class 3 Module 3
+# Module 3: Offline Machine Learning
 
+The goal of this lab is to check how Machine Learning feature within AWAF policy works.
+
+1. Go to Security  ››  Application Security : Security Policies : Policies List and check if OfflineMachineLearningDemo policy is in blocking mode
+
+![image](https://user-images.githubusercontent.com/51786870/211330998-ad6817a3-cbb7-465e-87a8-1caf7c81973c.png)
+
+2. Go to **Security  ››  Application Security : Policy Building : Learning and Blocking Settings** of this policy and check if under "**learning and blocking settings**" - "**Attack Signatures" - Potential False Positive Detection** is set to "**disabled**"
+
+3. Go to https://www.providence.org/. This is configured as a virtual server on BIG-IP with the IP address of 10.1.10.66.
+
+![image](https://user-images.githubusercontent.com/51786870/211332931-c78b7708-d7df-439d-991e-0a4aff48448c.png)
+
+![image](https://user-images.githubusercontent.com/51786870/211333069-c73c8750-9718-4132-93ec-aefc9f3d8f00.png)
+
+4. When you will be notified with the screen below just enter "thisisunsafe" in the browser window
+
+![image](https://user-images.githubusercontent.com/51786870/211331909-d4993ecb-f18f-410d-b994-4a3ec14ed51e.png)
+
+5. After that you should see the information from the application
+
+![image](https://user-images.githubusercontent.com/51786870/211333155-75f02d66-e7a8-4299-b527-cb68f1dc6510.png)
+
+**If not working, create the virtual server with settings like in vs_Offline_Machine_Learning on 10.1.10.66:443 with AutoMap enabled and client and server ssl profiles with pool washington.providence.org**
+
+6. Open the "Machine Learning" tab and select the Benign request to www.providence.org bookmark.	The benign request is blocked.
+
+![image](https://user-images.githubusercontent.com/51786870/211333736-a9c0542f-343c-439b-8f50-9ca631065d5c.png)
+
+7. Enable the ML model in " learning and blocking settings" - "Attack Signatures" and set "Potential False Positive Detection" to "Detect and allow"
+
+![image](https://user-images.githubusercontent.com/51786870/211333929-c325aebb-467e-4b35-875b-ab63b2dbd964.png)
+
+8. Send the same benign request and it should be allowed
+
+![image](https://user-images.githubusercontent.com/51786870/211334000-00369b27-cce0-43bd-b163-7893ea727c7a.png)
+
+You can see the message below.
+
+![image](https://user-images.githubusercontent.com/51786870/211334139-ec2a2e0e-58bf-4d23-a903-bf4e6e8b2d25.png)
+
+If yes, please copy and paste below link
+
+https://www.providence.org/~/link.aspx?_id=69039ACAAE934B429F35563EF5DCDBAC&_z=z
+
+**This concludes the lab**
 
 # [Class 1 - Getting started with WAF, Bot Detection and Threat Campaigns](#class-1)
   * [Module 1: Transparent WAF Policy](#class-1-module-1)
