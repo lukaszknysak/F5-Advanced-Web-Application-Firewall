@@ -1195,7 +1195,7 @@ In this module, we will work with Application Traffic Insights and get the ident
 
 **Application Traffic Insights Overview**
 
-Application Traffic Insight (ATI) is a Proof of Value (PoV) tool that allows customers to explore different Shape products and understand their benefits and value (free of charge for a period of 60 days).​​​​​​​ATI is an easy-to-use, self-service deployment with multiple deployment options on a variety of platforms (F5 or otherwise).
+Application Traffic Insight (ATI) is a Proof of Value (PoV) tool that allows customers to explore different Shape products and understand their benefits and value (free of charge for a period of 60 days). ATI is an easy-to-use, self-service deployment with multiple deployment options on a variety of platforms (F5 or otherwise).
 
 Application Traffic Insights is easy-to-use as it allows flexible and easy deployment using Big-IP, NGINX, SSE, AWS and JS snippet Give the customer compelling Proof of Value (PoV) charts/dashboards.
 
@@ -1222,180 +1222,177 @@ Application Traffic Insights is easy-to-use as it allows flexible and easy deplo
 
 **Note**
 
-`(https://docs.cloud.f5.com/docs/how-to/advanced-security/ati) cover the Application Traffic Insight onboarding in more detail.`
+`https://docs.cloud.f5.com/docs/how-to/advanced-security/ati/ cover the Application Traffic Insight onboarding in more detail.`
 
 
-Application Traffic Insights and iRule
+### Application Traffic Insights and iRule
 
 Application Traffic Insights includes two identifiers - a residue-based identifier and an attribute-based identifier. The residue-based identifier is based on local storage and cookies. The attribute-based identifier is based on signals collected on the device. The two identifiers always have different values.
 
 1JS writes both the residue-based and attribute-based identifiers in a single, first-party cookie called _imp_apg_r_. The _imp_apg_r_ cookie is URL encoded with the following format:
 
-%7B%22diA%22%3A%22AT9cyV8AAAAAd60uXCtYafPTZGLaVAku%22%2C%22diB%22%3A%22ASJ4gFmzPo%2Fa8AHJceWhykudRoXeBGlP%22%7D
+`%7B%22diA%22%3A%22AT9cyV8AAAAAd60uXCtYafPTZGLaVAku%22%2C%22diB%22%3A%22ASJ4gFmzPo%2Fa8AHJceWhykudRoXeBGlP%22%7D`
 
 This cookie can be decoded via https://www.urldecoder.org/ to get the response in clear text. The decoded cookie has the following format:
 
 
-"diA": "AT9cyV8AAAAAd60uXCtYafPTZGLaVAku"
-"diB": "ASJ4gFmzPo/a8AHJceWhykudRoXeBGlP"
+`"diA": "AT9cyV8AAAAAd60uXCtYafPTZGLaVAku"
+"diB": "ASJ4gFmzPo/a8AHJceWhykudRoXeBGlP"`
 
-Note
+**Note**
 
-Here, diA represents the residue-based identifier and diB represents the attribute-based identifier.
-
-How to decode Application Traffic Insights _imp_apg_r_ cookie with an iRule
-
-Within BIG-IP we use an iRule named print_deviceid and do a URL decoding of the _imp_apg_r_ cookie and log diA and diB into /var/log/ltm of BIG-IP.
-
-The irule named print_deviceid has been attached to Virtual Server named arcadia.emea.f5se.com_vs.
-
-../../_images/img_class3_module2_animated_4.gif
-
-How to test Application Traffic Insights
+`Here, diA represents the residue-based identifier and diB represents the attribute-based identifier.`
 
 
-To verify and view the logged values, connect to BIG-IP named “BIG-IP 16.1 - All Demos” via SSH.
+### How to decode Application Traffic Insights _imp_apg_r_ cookie with an iRule
 
-Run run util bash followed by tail -f /var/log/ltm in the SSH Session.
+1. Within BIG-IP we use an iRule named print_deviceid and do a URL decoding of the _imp_apg_r_ cookie and log diA and diB into /var/log/ltm of BIG-IP.
 
-RDP to windows machine called win-client.
+2. The irule named print_deviceid has been attached to Virtual Server named arcadia.emea.f5se.com_vs.
 
-Launch Chrome.
+![img_class3_module2_animated_4](https://user-images.githubusercontent.com/51786870/211325418-1585d5db-e23b-4b9d-9d96-93cf13169e66.gif)
 
-Open Devtools (Keyboard F12), select XHR in the Devtools and select the Browser Tab named Device ID check.
+### How to test Application Traffic Insights
 
-Check the request and response in Chrome.
+1. To verify and view the logged values, connect to BIG-IP via SSH.
 
-Also check the cookie on the Devtools under Application.
+2. Run run util bash followed by **tail -f /var/log/ltm** in the SSH Session.
 
-../../_images/img_class3_module2_animated_5.gif
+3. RDP to windows machine called win-client if you haven't done so.
 
-You may want to do further test by running Chrome in Incognito Modus and compare the values of diA and diB with the outcome of the previous test.
+4. Launch Chrome.
 
-Also check tail -f /var/log/ltm in the SSH Session as the values of diA and diB of the _imp_apg_r_ cookie have been written to the file.
+5. Open Devtools (Keyboard F12), select XHR in the Devtools and select the Browser Tab named Device ID check.
 
-../../_images/img_class3_module2_animated_6.gif
+6. Check the request and response in Chrome.
 
-Application Traffic Insights and ELK |
+7. Also check the cookie on the Devtools under Application.
+
+![img_class3_module2_animated_5](https://user-images.githubusercontent.com/51786870/211325751-feaf1f4c-c18b-4e35-9eef-974c998a9d45.gif)
+
+8. You may want to do further test by running Chrome in Incognito Modus and compare the values of diA and diB with the outcome of the previous test.
+
+9. Also check tail -f /var/log/ltm in the SSH Session as the values of diA and diB of the _imp_apg_r_ cookie have been written to the file.
+
+![img_class3_module2_animated_6](https://user-images.githubusercontent.com/51786870/211325835-0d54ffb8-b543-4812-8164-66293e06cd94.gif)
+
+### Application Traffic Insights and ELK 
 
 Within the UDF Environment you will find an instance called ELK. Here we run an ELK Container which is used to visualize Device Identifier and correlate data i.e. Username to Device ID; Geo IP to Device ID. Additional AWF Unified Bot Protection log events into ELK. Those logs been correlated as well.
 
 
-Note
+1. RDP to windows machine called win-client. The Password of the instance is listed within the Details / Documentation Tab.
 
-This is a MVP. So please reach out if you have use cases which we should add to the Demo.
+2. Launch Chrome and choose the bookmark called Kibana - Dashboard.
 
-Steps:
+4. Klick the Button left to “Home”. Within the Kibana Section you can choose between Discover or Dashboard.
 
-RDP to windows machine called win-client. The Password of the instance is listed within the Details / Documentation Tab.
+![img_class3_module2_animated_7](https://user-images.githubusercontent.com/51786870/211326161-40eb1e8a-03a2-492f-b2c6-f3a0bc98c43e.gif)
 
-Launch Chrome and choose the bookmark called Kibana - Dashboard.
+**Note**
 
-Klick the Button left to “Home”. Within the Kibana Section you can choose between Discover or Dashboard.
+`Within the Dashboard you will find pre-configured Visualizations. The Dashboard has only a limited space in terms of sizing. In case you want to anaylses a specific Visualization, use the function called Maximize Panel.`
 
-../../_images/img_class3_module2_animated_7.gif
-
-Note
-
-Within the Dashboard you will find pre-configured Visualizations. The Dashboard has only a limited space in terms of sizing. In case you want to anaylses a specific Visualization, use the function called Maximize Panel.
+![img_class3_module2_animated_7a](https://user-images.githubusercontent.com/51786870/211326234-1b26be56-843e-41ca-a414-12a605e87338.gif)
 
 
-../../_images/img_class3_module2_animated_7a.gif
-
-Demo Use Cases - Single Device accessing unauthorized accounts
+### Demo Use Cases - Single Device accessing unauthorized accounts
 
 Within here we will Demo sudden fluctuations in Users per DeviceID.
 
-../../_images/img_class3_module2_static_6.gif
+![image](https://user-images.githubusercontent.com/51786870/211326337-a3e494e7-7186-4a34-af4c-487ff674ea53.png)
 
-Steps:
+1. Launch Chrome and discover the browser and access the bookmark called Device ID check. This will launch the Arcadia Application.
 
-Launch Chrome and discover the browser and access the bookmark called Device ID check. This will launch the Arcadia Application.
+2. Navigate to the Login section of the Application.
 
-Navigate to the Login section of the Application.
+3. Try to login with different random Username.
 
-Try to login with different random Username.
+![img_class3_module2_animated_8](https://user-images.githubusercontent.com/51786870/211326456-bd8863f3-f6bc-4691-a074-7e8c7ab30a64.gif)
 
-../../_images/img_class3_module2_animated_8.gif
-Go back to Device ID+ Kibana and select Dashboard.
+4. Go back to **Device ID+ Kibana** and select **Dashboard**.
 
-Here you will see that a single Device (single Device ID Type A and Type B) tried to access the App with differnet Username.
+5. Here you will see that a single Device (single **Device ID Type A** and **Type B**) tried to access the App with differnet Username.
 
-../../_images/img_class3_module2_animated_9.gif
+![img_class3_module2_animated_9](https://user-images.githubusercontent.com/51786870/211326575-9a69f941-ddea-4a32-9a1a-9b320aec174f.gif)
 
-If you like to Demo it with Postman, open Postman, start New Runner Tab by navigating to the File Menu of Postman.
+6. If you like to test it with **Postman**, open **Postman**, start **New Runner Tab** by navigating to the **File Menu** of Postman.
 
-From Runner drag the collection Device ID+ ELK into the Field RUN ORDER.
+7. From Runner drag the collection Device ID+ ELK into the Field RUN ORDER.
 
-Choose the Source Data File named Demo_1.csv by using the select file menu.
+8. Choose the Source Data File named Demo_1.csv by using the select file menu.
 
-Via preview check which Data we will Post via Runner to login page of Arcadia Application.
+9. Via preview check which Data we will Post via Runner to login page of Arcadia Application.
 
-Now Press Run Device ID+ ELK in Runner.
+10. Now Press Run Device ID+ ELK in Runner.
 
-../../_images/img_class3_module2_animated_10.gif
+![img_class3_module2_animated_10](https://user-images.githubusercontent.com/51786870/211326746-32b62001-ef4a-4911-84cc-058916bcd6f1.gif)
 
-Demo Use Cases - Deliberate use of proxy networks
+
+### Demo Use Cases - Deliberate use of proxy networks
 
 Within that use case you will cover a single Device accessing unauthorized accounts from different Source IPs.
 
-../../_images/img_class3_module2_static_7.gif
+![img_class3_module2_static_7](https://user-images.githubusercontent.com/51786870/211326842-04f96ee2-1cdf-4334-a7b1-ecaf329fc65e.png)
+
 You will use Postman Runner to simulate 10 Request with 10 different Username using 10 different IPs but the same Device ID.
 
-../../_images/img_class3_module2_static_8.gif
+![img_class3_module2_static_8](https://user-images.githubusercontent.com/51786870/211326910-3d9933b5-a20d-48c4-a008-aa0c64299b56.gif)
 
-Steps:
+1. Open Postman, start New Runner Tab by navigating to the File Menu of Postman.
 
-Open Postman, start New Runner Tab by navigating to the File Menu of Postman.
+2. From Runner drag the collection Device ID+ ELK into the Field RUN ORDER.
 
-From Runner drag the collection Device ID+ ELK into the Field RUN ORDER.
+3. Choose the Source Data File named Demo_2.csv by using the select file menu.
 
-Choose the Source Data File named Demo_2.csv by using the select file menu.
+4. Via preview check which Data we will Post via Runner to login page of Arcadia Application.
 
-Via preview check which Data we will Post via Runner to login page of Arcadia Application.
+5. Now Press Run Device ID+ ELK in Runner.
 
-Now Press Run Device ID+ ELK in Runner.
+![img_class3_module2_animated_11](https://user-images.githubusercontent.com/51786870/211327024-66f6ade5-afbf-4ed0-ac89-638c36658521.gif)
 
-../../_images/img_class3_module2_animated_11.gif
-Go back to your Kibana Dashboard.
+6. Go back to your Kibana Dashboard.
 
-Within here you see again there is only one Device ID Type A / Device ID Type B identifier generated.
+7. Within here you see again there is only one Device ID Type A / Device ID Type B identifier generated.
 
-The requests coming from 10 different geo locations.
+8. The requests coming from 10 different geo locations.
 
-Ten Usernames have been used with one Device ID Type A / Device ID Type B to logon to the page.
+9. Ten Usernames have been used with one Device ID Type A / Device ID Type B to logon to the page.
 
-../../_images/img_class3_module2_animated_12.gif
+![img_class3_module2_animated_12](https://user-images.githubusercontent.com/51786870/211327098-582a4f90-fb7b-461b-b564-25102b6e4d58.gif)
 
-Demo Use Cases - Unusual Devices accessing user accounts
+### Demo Use Cases - Unusual Devices accessing user accounts
 
 Within this Demo we will use Postman Runner to simulate requests coming from different devices sitting behind a proxy network. The Source IP will be the same however, the Device ID Type A / Device ID Type B will change on the malicious request. You´ll also see valid request coming from username xyzgood.
 
-../../_images/img_class3_module2_static_9.gif
+![image](https://user-images.githubusercontent.com/51786870/211327156-0ed0620b-ed0d-4e38-805d-e7bfad7dd683.png)
 
-Steps:
+1. Open Postman, start New Runner Tab by navigating to the File Menu of Postman.
 
-Open Postman, start New Runner Tab by navigating to the File Menu of Postman.
+2. From Runner drag the collection Device ID+ ELK into the Field RUN ORDER.
 
-From Runner drag the collection Device ID+ ELK into the Field RUN ORDER.
+3. Choose the Source Data File named Demo_3.csv by using the select file menu.
 
-Choose the Source Data File named Demo_3.csv by using the select file menu.
+4. Via preview check which Data we will Post via Runner to login page of Arcadia Application.
 
-Via preview check which Data we will Post via Runner to login page of Arcadia Application.
+5. Now Press Run Device ID+ ELK in Runner.
 
-Now Press Run Device ID+ ELK in Runner.
+6. Go back to your Kibana Dashboard.
 
-Go back to your Kibana Dashboard.
+7. Within here you see that various Device ID Type A / Device ID Type B have been generated by a single IP.
 
-Within here you see that various Device ID Type A / Device ID Type B have been generated by a single IP.
+![img_class3_module2_animated_13](https://user-images.githubusercontent.com/51786870/211327268-0c25d4f6-46a0-47a2-bae5-734657dfd265.gif)
 
-../../_images/img_class3_module2_animated_13.gif
-If you invest further, you´ll see potential valid requets as these coming from a unique User by a Unique IP generating a single Device Identifier.
+8. If you invest further, you´ll see potential valid requets as these coming from a unique User by a Unique IP generating a single Device Identifier.
 
-On the other hand you see differnt Device Identifier been generated by the same IP using random Usernames.
+9. On the other hand you see differnt Device Identifier been generated by the same IP using random Usernames.
 
-../../_images/img_class3_module2_animated_14.gif
+![img_class3_module2_animated_14](https://user-images.githubusercontent.com/51786870/211327319-6efc1b8d-ca93-4b08-a993-641b33601d8c.gif)
 
+
+
+# Class 3 Module 2
+# Module 2: Check how Application Traffic Insights works
 
 
 # [Class 1 - Getting started with WAF, Bot Detection and Threat Campaigns](#class-1)
