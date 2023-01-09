@@ -1076,84 +1076,78 @@ Login to that BIG-IP instance to check the LCC configuration. The Password of th
 
 ![image](https://user-images.githubusercontent.com/51786870/211307080-1a503f4c-53b9-4fca-b973-309c2e0fcc1b.png)
 
-Note
+7. Click **Edit Login Page**
 
-There is also the option to create login pages automatically Creating Login Pages for Secure Application Access.
-
-
-Leaked Credential Detection is enabled within the Brute Force Protection configuration.
-
-../../_images/img_class3_module1_static_3.gif
-The following mitigation actions can be configured as an Action:
-
-../../_images/img_class3_module1_static_3a.gif
-
-Action
-
-Description
-
-Alarm
-
-report the Leaked Credentials Detection violation in event log
-
-Alarm and Blocking Page
-
-report the Leaked Credentials Detection violation in event log and send the Blocking Response Page
-
-Alarm and Honeypot Page
-
-report the Leaked Credentials Detection violation in event log and send the Honeypot Response Page
-
-Alarm and Leaked Credentials Page
-
-report the Leaked Credentials Detection violation in event log and send the Leaked Credentials Page
-
-Within that demo Learning and Blocking Settings for Leaked Credential Detection have been set to Alarm and Block.
-
-../../_images/img_class3_module1_static_4.gif
-The Honeypot Page and the Leaked Credentials Page can be configured in the Response and Blocking Pages screen (see screenshot below).
-
-../../_images/img_class3_module1_static_5.gif
-RDP to windows machine called win-client. The Password of the instance is listed within the Details / Documentation Tab.
-Launch Chrome. Spot the Folder called Leaked Credentials Check demo.
-
-Choose the bookmark called Hackazon — Login.
-
-Login with username demo33@fidnet.com and password mountainman01
-
-Your login is blocked by LCC as those credentials are known as leaked credentials.
-
-Alternatively you can also select the Arcadia bookmark in the Leaked Credentials Chrome Folder and you can also try other username/password combinations like usernam admin with password 12345678.
-
-../../_images/img_class3_module1_animated_1.gif
-Go back to to the BIG-IP instance to check in the request log for the blocked request with the Leaked credentials detection violation.
-
-../../_images/img_class3_module1_static_6.gif
-
-Demo Leaked Credentials Check with a Script
-
-Note
-
-In this demo you can do it without ASM enabled first - Hydra will find credentials and password that worked, and then do it with ASM enabled.
+![image](https://user-images.githubusercontent.com/51786870/211307506-3eebdc17-7e8d-4cae-84f4-c6730bd364e5.png)
 
 
-Remove ASM policy named LCC from Virtual Server Hackazon_protected_virtual on BIG-IP Instance BIG-IP 16.1 - All Demos.
-Launch the attack:
+**Note**
 
-SSH or use Web Shell of UDF Instance called kali.
+`There is also the option to create login pages automatically Creating Login Pages for Secure Application Access.`
 
-Run sudo su.
+![image](https://user-images.githubusercontent.com/51786870/211307599-f6dfda33-1d26-4298-beb2-2ee20965c378.png)
 
-Check you are in directory /home/ec2-user, else move to this directory.
+8. Leaked Credential Detection is enabled within the **Advanced Protection** and then in **Brute Force Protection** configuration tab.
 
-Launch the Brute Force stuffing attack (be careful, copy paste does not work every time because of the “”).
+![image](https://user-images.githubusercontent.com/51786870/211307918-a2f3c3bd-cee5-40cd-8c98-34b1e9d045b1.png)
 
-hydra -C cred_list.txt -V -I 10.1.10.78 http-form-post "/user/login?return_url=:username=^USER^&password=^PASS^:S=My Account". This is the VS on the BIG-IP named Leaked Credential Check Demo.
+9. Click **/user/login** and review the configuration. 
 
-Within your Putty or Web Shell Session You should see one line with [80][http-post-form] host: 10.1.10.78   login: demo33@fidnet.com   password: mountainman01. This means attack passed with this credential.
+![image](https://user-images.githubusercontent.com/51786870/211308155-002b5e78-b07e-430d-aaee-5c9a232c58a7.png)
 
-../../_images/img_class3_module1_static_6a.gif
-Login to Hackazon (demo1/demo1 or with the previous stolen cred), to show it works and that there is no Captcha.
+![image](https://user-images.githubusercontent.com/51786870/211308219-375a9de6-5ee2-4af0-a857-b1443aea4064.png)
+
+10. Within that demo Learning and Blocking Settings for Leaked Credential Detection have been set to **Alarm and Leaked Credentials Page**.
+
+![image](https://user-images.githubusercontent.com/51786870/211308509-916f7e69-cb2d-4533-829e-dde503b8a442.png)
+
+11. RDP to windows machine called win-client if you haven't done so. The Password of the instance is listed within the Details / Documentation Tab.
+
+12. Launch Chrome. Spot the Folder called **Leaked Credentials Check demo** and choose the bookmark called **Hackazon — Login**.
+
+![image](https://user-images.githubusercontent.com/51786870/211309464-2aeb83d2-c195-4fc1-ac48-e5f9c0eed063.png)
+
+13. Login with username **demo33@fidnet.com** and password **mountainman01**
+
+14. Your login is not blocked by LCC because the policy is in transparent mode but those credentials are known as leaked credentials.
+
+![image](https://user-images.githubusercontent.com/51786870/211309838-bcdaac6f-12e5-4df0-b47e-fa8a3596d501.png)
+
+15. Switch the policy to blocking mode, retest and go back to to the BIG-IP instance to check in the request log for the blocked request with the Leaked credentials detection violation.
+
+![image](https://user-images.githubusercontent.com/51786870/211310765-9b23c219-5c8c-4eaf-a587-7c6ff6369d27.png)
+
+![image](https://user-images.githubusercontent.com/51786870/211310854-c3e1a97e-b09b-4627-9023-0a3dcb920b30.png)
+
+
+
+### Demo Leaked Credentials Check with a Script
+
+**Note**
+
+`In this demo you can do it without ASM enabled first - Hydra will find credentials and password that worked, and then do it with ASM enabled.`
+
+
+1. Remove AWAF policy from Virtual Server 	**vs_Hackazon_IV** with IP 10.1.10.78 on BIG-IP and launch the attack
+
+
+   * SSH or use Web Shell of UDF Instance called kali.
+
+   * Run `sudo su`.
+   
+   * Check you are in directory `/home/ec2-user`, else move to this directory.
+
+   * Launch the Brute Force stuffing attack (be careful, copy paste does not work every time because of the “”).
+
+   * `hydra -C cred_list.txt -V -I 10.1.10.78 http-form-post "/user/login?return_url=:username=^USER^&password=^PASS^:S=My Account"`
+
+   * This is the VS on the BIG-IP named **vs_Hackazon_IV**.
+
+   * Within your Putty or Web Shell Session You should see one line with [80][http-post-form] host: 10.1.10.78   login: demo33@fidnet.com   password: mountainman01. This means attack passed with this credential.
+
+![image](https://user-images.githubusercontent.com/51786870/211312381-d2ac1e53-01b2-476a-b799-dc7948b0a3c8.png)
+
+2. Login to Hackazon (demo1/demo1 or with the previous stolen cred), to show it works and that there is no Captcha.
 
 Try with a distributed attack. Here we simulate a Bot network sending a Credential Stuffing attack with thousand leaked credentials.
 
