@@ -882,24 +882,94 @@ Another screenshot of sample output below:
 
 **Note**
 
-It may take 5 or more minutes before you begin to get learned baseline numbers. Also, the desired values are the minimum values we would like to see prior to triggering attacks as part of this lab exercise. You can, however, move onto module 3 and 4 in this lab while baselines are being established. Do not stop baseline traffic script
+`**It may take 5 or more minutes before you begin to get learned baseline numbers. Also, the desired values are the minimum values we would like to see prior to triggering attacks as part of this lab exercise. Do not stop baseline traffic script**`
 
 To see all of the values available and wide range of interesting statistics, enter the following command from BIG-IP console:
 
-admd -s vs./Common/vs_hackazon_http
+`admd -s vs./Common/vs_Hackazon_I`
+
 To view Advanced Web Application Firewall layer 7 DoS log, enter the following command from BIG-IP console:
 
-tail -f /var/log/dosl7/dosl7d.log
+`tail -f /var/log/dosl7/dosl7d.log`
 
-**Now it's time to review the configuration**
+### Request Signatures
+
+In this task  you will be initiating a L7 DDoS attack on the hackazon virtual server, from Kali linux. Source IP will match XFF_mixed_Attacker_Good_iRule, and an X-Forward-For header will be inserted in the HTTP request in the 132.173.99.0/24 IP address range.
+
+Once the attack begins the BIG-IP WAF will immediately switch into attack mode due to the server health deteriorating almost immediately. As the server gets totally overwhelmed, you may at first notice the good script dropping requests. That’s why BaDoS first mitigates with a global rate limit just to protect the server. In a short time, the good script will go back to all 200 OK responses. During this time Behavioral DoS identifies anamolous traffic and generates Dynamic Signatures matching only the malicious traffic. Once mitigation is in effect, the server health will rapidly improve and application performance will return to normal.
+
+1. Using your Browser open another session to Kali Linux web shell leaving the two other running with baseline traffic scripts
+
+2. Navigate to **Security ›› DoS Protection:Signatures** and click on the **Dynamic** box, then set the **Refresh** value to 20 secs.
+
+![image](https://user-images.githubusercontent.com/51786870/211300038-64258e36-1658-44df-b3ce-ac11ebda4990.png)
+
+**Note**
+
+`The list of the signatures should be empty as we didn't run any attack yet`
+
+3. Open another tab/window in Browser, and go to **Security ››Reporting : DoS : Dashboard**. The dashboard is NOT real time in may take up to 10 minutes for traffic to display.
+
+4. Revisit the Terminal window you opened earlier which is monitoring behavioral DoS learning signals. Verify the first number (baseline_learning_confidence) is at or above 80%. Normally, above 90% would be ideal, but for the purposes of this lab over 80% will suffice.
+
+![image](https://user-images.githubusercontent.com/51786870/211300431-3fcc4fc4-c2dc-44da-82dd-a16e674d063c.png)
+
+5. Revisit the Terminal window you opened earlier which is still running the baseline traffic generation script. Make note of the normal, pre-attack, response time for each request.
+
+![image](https://user-images.githubusercontent.com/51786870/211300478-9e3108f9-5aed-45ac-91a9-d154a2512462.png)
+
+6. From another shell session from Kali Linux run the attack by entering commands below
+
+`cd /home/ec2-user/
+./AB_DOS.sh`
+
+Select **2** – Attack start - score
+
+![image](https://user-images.githubusercontent.com/51786870/211301096-2b2278f8-3f13-4742-85b8-7eabf653ef91.png)
 
 
+### Examine the Mitigation
+
+1. On TMUI, go to **Security > DoS Protection > Signatures** and click on the bar for Dynamic or open the browser tab with those signatures. You should see an entry similar to the below (this may not show up right away, revisit the page until an entry appears).
+
+![image](https://user-images.githubusercontent.com/51786870/211301243-400b8d86-4658-471d-951e-d4434eb17495.png)
 
 
+2. Open another tab to the GUI on BIGIP, and navigate to **Security ›› Event Logs ›› DoS ›› Application Events**
 
-Below is output that has reached 88% then 92%.
+Almost immediately you should see an attack has started, and Advanced Web Application Firewall has assigned an Attack ID to the event. You will see something similar to the screenshot below:
 
+![image](https://user-images.githubusercontent.com/51786870/211301600-2a0feecb-3db2-4812-b436-f79fa382cd65.png)
 
+Review the Dynamic Signatures UI page opened in step #2. It might take a few moments for a dynamic signature(s) to generate, but shortly after the attack has been detected a signature should be created. Once a signature(s) is generated, if you click on the signature (NOT on the blue link, but somewhere on the signature bar), you will get the details about the signature in Wireshark format. Also, you can examine the current status of the signature (mitigating or not), and statistics on recent attacks which used the signature.
+
+![image](https://user-images.githubusercontent.com/51786870/211301743-7cc39f2f-2d43-461c-89f4-103584ca1bdd.png)
+
+**Signature ID**: Signature ID generated for this signature. You can use the signature ID in DoS Analysis/Dashboard views (explored in module 6) to get more details on actions taken by this signature.
+
+**Deployment State**: current state of the signature. Options include:
+
+  * **Mitigate** - Collect stats, learn, alert, and mitigate. All thresholds and threshold actions are applied, and rate limiting occurs if the device is under high stress.
+  * **Detect Only** - Collects stats, learn, and alert. Develops dynamic signatures without enforcing any thresholds or limits.
+  * **Learn Only** - Collect stats and learn. Develops dynamic signatures without enforcing any thresholds or limits
+  * **Disabled** - No stat collection or mitigation, totally disables the signature.
+
+**Attack Status** - the state of the signature with respect to ongoing attacks. Specifically, defines whether this particular signature is being used to mitigate an on-going attack.
+
+**Attack ID** - the attack ID for the attack that generated this signature. Clicking the attack ID will take you to the DoS Analysis views filtered on this attack ID.
+
+**Predicates List** - the conditions for the request to be associated with this signature. Includes one or more match ,expresssions, joined by logical operators, which the system uses to match traffic causing a DoS attack.
+
+**Attack History** - provides an account of all attacks in which this signature has been used to mitigate.
+
+**Note**
+
+`Dynamic Attack signatures generated will remain in the list up to the max number of signatures supported, and will be will re-used whenever an attack is detected, and traffic matches the conditions defined in the signature`
+
+With the attack script still running, examine the output of the baseline script. You should be getting HTTP 200 OK responses, and the response time should be inline with pre-attack response times. Also, verify you can use browse to http://hackazon.f5demo.com without issue.
+In the window where you are running the attack script, enter CTRL-C, then type 4 to kill the attack script cleanly.
+Using Chromium Browser, navigate to Security ›› DoS Protection:Signatures and click on the Dynamic box. Then click the check box next to the Name column to select all signatures, and click delete to remove all attack signatures created during this module.
+Leave baseline_menu.sh script running.
 
 
 
