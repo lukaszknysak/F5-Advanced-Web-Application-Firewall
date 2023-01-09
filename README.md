@@ -562,6 +562,9 @@ These steps are necessary for this demonstration. In the “real world” having
 
 **Congratulations! You just completed Lab 3 and have continued your introductory knowledge to Advanced WAF with Threat Campaign Signatures. These powerful and highly-accurate signatures are a great first step into enforcing blocking as they produce virtually no false positives.**
 
+**This completes Class 1**
+  
+**Congratulations! You have just completed Lab 2 by implementing a signature based bot profile. Implementing bot signatures is the bare minimum for bot mitigation and not a comprehensive security strategy. This is a excellent step in getting started with WAF and will provide actionable information on automated traffic. You can use this information to take next steps such as implementing challenges and blocking mode. At a very minimum, share this information with your Application teams. Automated traffic can negatively affect the bottom line especially in cloud environments where it’s pay to play. See our 241 class on Elevated WAF Security for more info on advanced bot mitigation techniques.**
 
 # Class 2
 
@@ -752,10 +755,16 @@ We will use the “win-client” virtual machine provided by this deployment to 
 `Shape Solutions can provide the same and even more accurate results because of the more advanced JS and the AI based classification.`
 
 
+# Class 2 Module 2
+# Module 2: Behavioral DOS Protection
 
-**This completes Class 1**
-  
-**Congratulations! You have just completed Lab 2 by implementing a signature based bot profile. Implementing bot signatures is the bare minimum for bot mitigation and not a comprehensive security strategy. This is a excellent step in getting started with WAF and will provide actionable information on automated traffic. You can use this information to take next steps such as implementing challenges and blocking mode. At a very minimum, share this information with your Application teams. Automated traffic can negatively affect the bottom line especially in cloud environments where it’s pay to play. See our 241 class on Elevated WAF Security for more info on advanced bot mitigation techniques.**
+
+
+
+
+
+
+
 
 
 # [Class 1 - Getting started with WAF, Bot Detection and Threat Campaigns](#class-1)
