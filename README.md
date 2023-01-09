@@ -1205,7 +1205,7 @@ Application Traffic Insights is easy-to-use as it allows flexible and easy deplo
 
 **Bot Assessment Dashboard**
 
-**../../_images/img_class3_module2_static_11.gif**
+![image](https://user-images.githubusercontent.com/51786870/211324888-69bd2523-5ea0-459b-a077-02054deaf6aa.png)
 
 ### Check how Application Traffic Insights Overview* works
 
@@ -1213,11 +1213,12 @@ Application Traffic Insights is easy-to-use as it allows flexible and easy deplo
 
 2. Within the WebUI of the BIG-IP instances navigate to **iApps › Application Services : Applications › Application_Traffic_Insight** and select **Reconfigure**.
 
-![image](https://user-images.githubusercontent.com/51786870/211324026-9ce579ab-8263-4b54-bb58-11d80470b5a8.png)
+![img_class3_module2_animated_2](https://user-images.githubusercontent.com/51786870/211324805-39336990-8b23-4e70-8138-7d2ab4b6a3e6.gif)
+
 
 3. Within the iApp configuration you will find predefined JS Injection configuration in the 1JS part. Furthermore the 1JS gets been injected on the Virtual Server named arcadia.emea.f5se.com_vs. We leave the rest of the configuration untouched.
 
-![image](https://user-images.githubusercontent.com/51786870/211324184-a3e9bf7d-6987-4fbe-afb5-3255638f383d.png)
+![img_class3_module2_animated_3](https://user-images.githubusercontent.com/51786870/211324745-d17f1b77-fd58-4a91-804e-4b6b7181de4f.gif)
 
 **Note**
 
