@@ -934,6 +934,10 @@ Select **2** – Attack start - score
 
 ![image](https://user-images.githubusercontent.com/51786870/211301243-400b8d86-4658-471d-951e-d4434eb17495.png)
 
+Click on one of the signatures to expand detailed information about it 
+
+![image](https://user-images.githubusercontent.com/51786870/211302006-8c16c736-1973-449b-ba5a-f34034f10f74.png)
+
 
 2. Open another tab to the GUI on BIGIP, and navigate to **Security ›› Event Logs ›› DoS ›› Application Events**
 
@@ -941,7 +945,11 @@ Almost immediately you should see an attack has started, and Advanced Web Applic
 
 ![image](https://user-images.githubusercontent.com/51786870/211301600-2a0feecb-3db2-4812-b436-f79fa382cd65.png)
 
-Review the Dynamic Signatures UI page opened in step #2. It might take a few moments for a dynamic signature(s) to generate, but shortly after the attack has been detected a signature should be created. Once a signature(s) is generated, if you click on the signature (NOT on the blue link, but somewhere on the signature bar), you will get the details about the signature in Wireshark format. Also, you can examine the current status of the signature (mitigating or not), and statistics on recent attacks which used the signature.
+**Note**
+
+`Notice that the attack Mitigation was Behavioral. This means a dynamic signature was created and enforced to mitigate the attack.`
+
+3. Review the Dynamic Signatures UI page opened in step #2. It might take a few moments for a dynamic signature(s) to generate, but shortly after the attack has been detected a signature should be created. Once a signature(s) is generated, if you click on the signature (NOT on the blue link, but somewhere on the signature bar), you will get the details about the signature in Wireshark format. Also, you can examine the current status of the signature (mitigating or not), and statistics on recent attacks which used the signature.
 
 ![image](https://user-images.githubusercontent.com/51786870/211301743-7cc39f2f-2d43-461c-89f4-103584ca1bdd.png)
 
@@ -966,13 +974,51 @@ Review the Dynamic Signatures UI page opened in step #2. It might take a few mom
 
 `Dynamic Attack signatures generated will remain in the list up to the max number of signatures supported, and will be will re-used whenever an attack is detected, and traffic matches the conditions defined in the signature`
 
-With the attack script still running, examine the output of the baseline script. You should be getting HTTP 200 OK responses, and the response time should be inline with pre-attack response times. Also, verify you can use browse to http://hackazon.f5demo.com without issue.
-In the window where you are running the attack script, enter CTRL-C, then type 4 to kill the attack script cleanly.
-Using Chromium Browser, navigate to Security ›› DoS Protection:Signatures and click on the Dynamic box. Then click the check box next to the Name column to select all signatures, and click delete to remove all attack signatures created during this module.
-Leave baseline_menu.sh script running.
+4. With the attack script still running, examine the output of the baseline script. You should be getting HTTP 200 OK responses, and the response time should be inline with pre-attack response times. Also, verify you can use browse to the website without issue.
 
+5. In the window where you are running the attack script, enter CTRL-C, then type 4 to kill the attack script cleanly.
 
+6. Go to **Security  ››  Reporting : DoS : Dashboard** to examine the information about detected DOS attack
 
+![image](https://user-images.githubusercontent.com/51786870/211302584-8483babd-7d80-4703-9154-2c4baed00c06.png)
+
+7. Go to **Statistics  ››  Dashboard** and then select **Behavioral DoS** view
+
+![image](https://user-images.githubusercontent.com/51786870/211302855-fa051400-d595-4334-8737-c18b64244b54.png)
+
+8. Click on the virtual server that is under attack or the attack itself to examine detailed information about the attack
+
+![image](https://user-images.githubusercontent.com/51786870/211303058-5aadc779-0762-4d41-a797-4a724b9aa703.png)
+
+![image](https://user-images.githubusercontent.com/51786870/211303132-752b4d2b-f903-418c-bf42-08c644177e69.png)
+
+**The new dashboard provides:**
+   * Client HTTP Transactions
+   * Client HTTP Requests & Transactions
+   * Server HTTP Transactions
+   * Concurrent Server-Side Connections
+   * Server Stress
+   * Server Queue
+   * TLS Handshake
+   * Connections Mitigation
+   * Layer 3-4 & SSL Mitigations
+   * HTTP Mitigation
+   * CPU - Utilization
+   * Memory - Utilization
+
+**The new Dashboard also provide the ability to:**
+
+   * Zoom-in and Zoom-out
+   * Show legends of each chart, on placing mouse on any chart
+   * Custom time selection view
+
+![image](https://user-images.githubusercontent.com/51786870/211303432-c2504903-2105-4c61-98cf-beee9dad9d1f.png)
+
+**Note**
+
+`Do not move on without ending these attack and baseline scripts, as they may have an effect on the rest of the labs`
+
+9. In each of your terminal windows type Ctrl+C to terminate the scripts. The AB_DOS.sh script will require you to enter 4 to quit after pressing Ctrl+C..
 
 # [Class 1 - Getting started with WAF, Bot Detection and Threat Campaigns](#class-1)
   * [Module 1: Transparent WAF Policy](#class-1-module-1)
