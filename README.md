@@ -1710,18 +1710,3 @@ Review the Protected Hackazon Login Page
    * Encryption – DataSafe encrypted the value of the password field so that it is not a readable value in the login request.
 
 **This concludes Class 3**
-
-# [Class 1 - Getting started with WAF, Bot Detection and Threat Campaigns](#class-1)
-  * [Module 1: Transparent WAF Policy](#class-1-module-1)
-  * [Module 2: IP Intelligence](#class-1-module-2)
-  * [Module 3: Threat Campaigns](#class-1-module-3)
-
-# [Class 2 - Elevated WAF Protection](#class-2)
-  * [Module 1: Bot Defense](#class-2-module-1)
-  * [Module 2: Behavioral DOS Protection](#class-2-module-2)
-
-# [Class 3 - Advanced Protection](#class-3)
-  * [Module 1: Leaked Credential Check - Credential Stuffing](#class-3-module-1)
-  * [Module 2: Check how Application Traffic Insights works](#class-3-module-2)
-  * [Module 3: Offline Machine Learning](#class-3-module-3)
-  * [Module 4: Protecting Credentials with DataSafe](#class-3-module-4)
