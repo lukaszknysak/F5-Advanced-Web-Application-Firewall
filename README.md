@@ -10,7 +10,6 @@ The intend is to provide demos on the following content:
 # Table of Contents
 # [Getting to Know the Environment](#getting-to-know-the-environment)
   * [Module 1: Lab Topology](#module-1-lab-topology)
-  * [Module 2: How to Deploy a Solution](#module-2)
 
 # [Class 1 - Getting started with WAF, Bot Detection and Threat Campaigns](#class-1)
   * [Module 1: Transparent WAF Policy](#class-1-module-1)
