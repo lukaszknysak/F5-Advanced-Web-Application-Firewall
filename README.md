@@ -1,7 +1,6 @@
-# THIS IS UNDER CONSTRUCTION
 # Welcome to the F5 Advanced Web Application Firewall lab guide
 
-This series of lab exercises is intended to explain and demonstrate key features of F5 Advanced Web Application Firewall. The Blueprint which we use as base for all upcoming Modules is called Advanced WAF Demo v16 + LCC, ML and Device ID+.
+This series of lab exercises is intended to explain and demonstrate some key features of F5 Advanced Web Application Firewall. 
 
 The intend is to provide demos on the following content:
 
