@@ -499,14 +499,16 @@ Another practical control to implement early on in your WAF deployment is Geoloc
 
 # Class 1 Module 3
 # Module 3: Threat Campaigns
-Expected time to complete: 20 minutes
+Expected time to complete: 10 minutes
 
 ## Exercise 3.1: Threat Campaigns
+
 Threat Campaign signatures are subscription based and sourced from a variety of threat intel sources based on real world campaigns to attack and/or take over resources. Attackers are constantly looking for ways to exploit the latest vulnerabilities and/or new ways to exploit old vulnerabilities. F5’s Threat Research team is constantly monitoring malicious activity around the globe and creating signatures specific to these exploits. These Threat Campaign signatures are based on current “in-the-wild” attacks. Threat Campaign signatures contain contextual information about the nature and purpose of the attack.
 
 As an example, a normal WAF signature might tell you that SQL injection was attempted. A Threat Campaign signature will tell you that a known threat actor used a specific exploit of the latest Apache Struts vulnerability (CVE -xxxx) in an attempt to deploy ransomware for cryptomining software.
 
 ### Objective
+
   * Prep the Virtual Server
   * Review TC Signatures
   * Review Learning/Blocking settings and Staging Concept
@@ -515,61 +517,99 @@ As an example, a normal WAF signature might tell you that SQL injection was atte
   * Estimated time for completion: 20 minutes
 
 ### Prep the Virtual Server
+
 These steps are necessary for this demonstration. In the “real world” having the Bot Defense Profile pick up this type of attack coming from a tool, not a browser, would be preferred, going back to the layered security approach.
 
-1. Navigate to **Local Traffic > Virtual Servers > Virtual Server List > insecureApp1_vs > Security > Policies**.
-2. Enable the **Application Security Policy: webgoat_waf**. Threat Campaign Signatures are part of your WAF policy.
-3. **Disable the Bot Defense Profile**. We are removing the bot profile since we will be using a “Bot” to test the Threat Campaign signatures.
-4. **Remove the Bot_Log profile** and click **Update**. Your virtual should look like this:
+1. Navigate to **Local Traffic > Virtual Servers > Virtual Server List > juiceshop_vs > Security > Policies**.
 
-![image](https://user-images.githubusercontent.com/38420010/119360891-5ebff500-bcab-11eb-9921-6a15bd53f2e9.png)
+2. Check if the **juiceshop_policy** is selected. Threat Campaign Signatures are part of your WAF policy.
+
+3. **Disable all other protections**. We are removing the bot profile since we will be using a "Bot" to test the Threat Campaign signatures.
+
+4. **Enable Log all requests profile** and click **Update**. Your virtual should look like this:
+
+![image](https://user-images.githubusercontent.com/51786870/211510275-149224a2-38a0-4cdf-85fe-dfb6a60e3183.png)
 
 ### Review TC Signatures
+
 1. Navigate to **System > Software Management > Live Update > Threat Campaigns**. DO NOT update the system but note the Installation History. You can also view the Bot Signatures and other signature packages that are currently installed or pending.
 `Without an Advanced WAF license and Threat Campaign Subscription you will NOT get Live Updates for Bot Signatures.`
+
+![image](https://user-images.githubusercontent.com/51786870/211510625-17aa22a8-c2f4-4709-964b-68b019783369.png)
+
+**Note**
+
+`You can optionally update Threat Campaigns if it is available.`
+
+![image](https://user-images.githubusercontent.com/51786870/211510937-8a54de42-41cb-40f3-93ac-d811035bbfd5.png)
+
 2. Navigate to **Security > Options > Application Security > Threat Campaigns** and review some of the signatures and information about them.
-3. Click on the **Apache Struts2 Jakarta Multipart Parser BillGates** signature and note the attack type as well as the CVE reference: **CVE-2017-5638**. You can click the CVE reference link for more information.
-4. Click on the filter button and under the Reference field, type: **2020** and **Apply Filter** to search for all CVE’s related to 2020.
-![image](https://user-images.githubusercontent.com/38420010/119361128-9b8bec00-bcab-11eb-8deb-56a7bb4d9672.png)
+
+![image](https://user-images.githubusercontent.com/51786870/211511035-7b817586-761e-4d8e-bdb8-aa5df325c7a5.png)
+
+3. Search for the **Apache Struts2 Jakarta Multipart Parser BillGates** signature and note the attack type as well as the CVE reference: **CVE-2017-5638**. You can click the CVE reference link for more information.
+
+![image](https://user-images.githubusercontent.com/51786870/211511319-55963f70-4d66-49c2-bee3-2abff22a8b67.png)
+
+![image](https://user-images.githubusercontent.com/51786870/211511397-d59fedef-9a02-4437-a19a-089980853191.png)
+
+4. Click on the filter button and under the Reference field, type: **2022** and **Apply Filter** to search for all CVE’s related to 2022.
+
+![image](https://user-images.githubusercontent.com/51786870/211511623-3c37c774-dada-451c-8141-d3c763d1a3cf.png)
 
 ### Review TC Learning and Blocking Settings
+
 1. Navigate to **Security > Application Security > Policy Building > Learning and Blocking Settings** and expand the **Threat Campaigns** section.
+
 2. Note that the system is set to **Alarm** and **Block** on signature matches. Remember, our policy is in transparent mode so the blocking setting will not have any effect.
-![image](https://user-images.githubusercontent.com/38420010/119361221-b5c5ca00-bcab-11eb-96ba-d3be2be65fca.png)
+
+![image](https://user-images.githubusercontent.com/51786870/211511765-ffdd10cf-868b-4196-9607-55bcd6666e8f.png)
+
 `Staging and the Enforcement Readiness period means that when new signatures are downloaded, if staging is enabled, the system will wait until the enforement readiness period is over before it starts blocking. You will still see alarms during this period. Due to the high accuracy nature of Threat Campaign signatures, the default system configuration is to have Staging turned off so new signatures go into effect immediately.`
 
-
 ### Test TC Signatures and Review Logs
-`Please ensure the ipi_tester script is not running in the terminal on the Linux Client. If it is, you can strop it with Ctrl+C`
-1. From the Linux Client, confirm that the ipi_tester script is not running in the terminal and launch **Postman** from the Desktop. **It takes a few moments for Postman to launch**.
-![image](https://user-images.githubusercontent.com/38420010/119361378-e1e14b00-bcab-11eb-9766-16f63afb8f1b.png)
-2. You will see a collection called **Threat Campaigns** and within, an item called **test_req**. This simply tests that the site is responding.
-3. Click on **test_req** and then click the blue **Send** button on the top right. If your output does not look like this, please let a lab instructor know.
-![image](https://user-images.githubusercontent.com/38420010/119363569-3b4a7980-bcae-11eb-9a87-93defc9bb83e.png)
-4. Click on the **Fortinet SSL VPN** attack and then click the blue **Send** button. Repeat this process for the **Oracle2** attack. Explore the http headers and bodies being sent. If your policy was in blocking mode you would receive a block page but since the policy is transparent, these attacks are making it through and the juiceshop page is returned.
+
+1. From the Windows Client launch **Postman** from the Desktop. **It takes a few moments for Postman to launch**.
+
+![119361378-e1e14b00-bcab-11eb-9766-16f63afb8f1b](https://user-images.githubusercontent.com/51786870/211512064-c7ac6ffd-79a7-4b30-8dfd-73bc17ae0c5e.png)
+
+2. You will see a collection called **Advanced WAF - ThreatCampaign** and within, an item called **Struts 2 Jakarta - gift**. This simply tests that the site is responding.
+
+![image](https://user-images.githubusercontent.com/51786870/211512276-be916372-51c5-467f-aa85-430b153682b9.png)
+
+
+3. Click on **Struts 2 Jakarta - gift** and then click the blue **Send** button on the top right. If your output does not look like this, please let a lab instructor know.
+
+![image](https://user-images.githubusercontent.com/51786870/211512682-7e9676a8-7ddd-47c5-a9c3-b08fc327f030.png)
+
+4. Click on the **Struts2 Threat Campaign** attack and then click the blue **Send** button. Explore the http headers and bodies being sent. If your policy was in blocking mode you would receive a block page but since the policy is transparent, these attacks are making it through and the juiceshop page is returned.
+
+![image](https://user-images.githubusercontent.com/51786870/211513054-851c2064-8d20-49c3-8fa6-217c1332338c.png)
+
 5. Back in Advanced WAF, navigate to **Security > Event Logs > Application > Requests** and review the Sev5 events.
-![image](https://user-images.githubusercontent.com/38420010/119363772-7a78ca80-bcae-11eb-890c-83f3eb1c8f17.png)
-6. Click on the event for **/remotefgt_lang** and note the triggered violations. Click on **All Details** to the right of the screen to get more information. You can also click the **Open to new tab** icon in the top right to get an isolated view of this violation.
-![image](https://user-images.githubusercontent.com/38420010/119363841-8ebcc780-bcae-11eb-8f2d-fc593edba67f.png)
+
+![image](https://user-images.githubusercontent.com/51786870/211513207-609ee5ac-2719-40c6-a462-614ef1edc9f8.png)
+
+6. Click on the event for **/index.action** and note the triggered violations. Click on **All Details** to the right of the screen to get more information. You can also click the **Open to new tab** icon in the top right to get an isolated view of this violation.
+
+![119363841-8ebcc780-bcae-11eb-8f2d-fc593edba67f](https://user-images.githubusercontent.com/51786870/211513504-d52c7c97-bab2-4e44-980d-c92dfff0407d.png)
+
 7. When working in the WAF Requests event viewer, you can see exactly which Attack Signatures or Threat Campaigns were triggered under the **Violations** section. Click the **Numerical Value** under **Occurrences** for **Threat Campaign detected**.
-![image](https://user-images.githubusercontent.com/38420010/119363924-a7c57880-bcae-11eb-9227-3dca7d61103a.png)
+
+![image](https://user-images.githubusercontent.com/51786870/211513767-b1e5abd7-2318-4de0-b430-b7877963d2a7.png)
+
 8. Notice that the there were actually 2 Threat Campaigns Signatures that triggered and you can see the Applied Blocking Setting of **Alarm**
-9. Click the little blue info icon next to one of the Threat Campaign Signatures for more information.
-![image](https://user-images.githubusercontent.com/38420010/119363967-b57afe00-bcae-11eb-8cc2-a589b7f81928.png)
-10. Review the other alert that we generated from Postman and explore any additional Attack Signatures that were fired. In this instance, a Malformed XML Data signature that was enabled as part of our Rapid Deployment Policy also picked up the attack.
-![image](https://user-images.githubusercontent.com/38420010/119364022-c461b080-bcae-11eb-9f6d-177b7995574f.png)
-11. Navigate to **Security > Event Logs > Application > Event Correlation** and explore the Dashboard.
-12. Click on the **Threat Campaign** incident and then click on **Export Incident** and review the generated report.
 
-![image](https://user-images.githubusercontent.com/38420010/119364311-0ab70f80-bcaf-11eb-98e5-d3f1d3382548.png)
+9. Optionally you can retest the traffic from **Postman** with the policy in **Blocking Mode**
 
-**This completes Lab 3**
+**This completes Module 3**
 
 **Congratulations! You just completed Lab 3 and have continued your introductory knowledge to Advanced WAF with Threat Campaign Signatures. These powerful and highly-accurate signatures are a great first step into enforcing blocking as they produce virtually no false positives.**
 
 **This completes Class 1**
   
-**Congratulations! You have just completed Lab 2 by implementing a signature based bot profile. Implementing bot signatures is the bare minimum for bot mitigation and not a comprehensive security strategy. This is a excellent step in getting started with WAF and will provide actionable information on automated traffic. You can use this information to take next steps such as implementing challenges and blocking mode. At a very minimum, share this information with your Application teams. Automated traffic can negatively affect the bottom line especially in cloud environments where it’s pay to play. See our 241 class on Elevated WAF Security for more info on advanced bot mitigation techniques.**
+
+
 
 # Class 2
 
