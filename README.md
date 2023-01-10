@@ -376,7 +376,7 @@ Expected time to complete: 30 minutes
 
 We created a transparent policy way back in Lab 1 to configure Transparent WAF Policy. We then tested out standard signatures  and now we will explore and test some of the other components that should be in scope for enforcement early on in your WAF deployment.
 
-## Exercise 1.1: IP Intelligence Policies
+### Exercise 1 – Task 1 - Review IP Intelligence Log entries on Advanced WAF
 ### Objective
 
   * Configure Global IPI Profile & Logging
@@ -385,14 +385,10 @@ We created a transparent policy way back in Lab 1 to configure Transparent WAF P
   * Implement IPI w/ XFF inspection
   * Estimated time for completion: 30 minutes.
 
-### Create Your 1st L3 IPI Policy
-
-An IPI policy can be created and applied globally, at the virtual server (VS) level or within the WAF policy itself. We will follow security best-practice by applying IPI via a Global Policy to secure Layer 3 device-wide and within the Layer 7 WAF policy to protect the App by inspecting the HTTP X-Forwarded-For Header.  
+An IPI policy can be created and applied globally, at the virtual server (VS) level or within the WAF policy itself.  
 
 ![image](https://user-images.githubusercontent.com/38420010/119348500-3e893980-bc9d-11eb-8836-e57471dc73a8.png)
 
-In this first lab, we will start by enabling a Global IPI Policy; much like you would do, as a day 1 task for your WAF:  
-  
 1. RDP to the Windows Client by choosing the RDP access method from your UDF environment page. 
 
 2. Once logged in, launch Chrome Browser. You can double-click the icon or right click and choose execute but do not click multiple times. It does take a few moments for the browser to launch the first time.
@@ -420,48 +416,84 @@ To ensure the IP is still in bad category test from https://www.brightcloud.com/
 If that IP has rotated out of the malicious DB, you can try one of these alternates:
 
    * 82.200.247.241 - Phishing
+   * 82.200.247.241 - Phishing
    * 134.119.219.93 - Spam Source
    * 218.17.228.102 - Spam Source
-   * 220.169.127.172 - Scanner
 
-![img_class1_module1_animated_1](https://user-images.githubusercontent.com/51786870/211500447-3c309fd2-8f4c-47cb-8939-d5e7e14510af.gif)
+![img_class1_module1_animated_1](https://user-images.githubusercontent.com/51786870/211505104-0a03d2fb-390b-419c-b289-e8eb8fed1737.gif)
 
-### Exercise 1 – Task 1 - Review IP Intelligence Log entries on Advanced WAF
+7. IP Intelligence is already configured on BIG-IP.
 
-1. IP Intelligence is already configured on BIG-IP.
+8. Login to BIG-IP via WebUI (The Password of the BIG-IP instance is listed within the Details / Documentation Tab).
 
-2. Login to BIG-IP via WebUI (The Password of the BIG-IP instance is listed within the Details / Documentation Tab).
+9. Navigate to **Security > Event Logs > Application > Requests** and review the entries. You should see a Severity 3 Alert for the attempted access to uri: /xff-test from a malicious IP.
 
-3. Navigate to **Security > Event Logs > Application > Requests** and review the entries. You should see a Severity 3 Alert for the attempted access to uri: /xff-test from a malicious IP.
+![image](https://user-images.githubusercontent.com/51786870/211505184-a712cf9d-d9da-4db7-bdce-585cf158fbf2.png)
 
-![img_class1_module1_animated_2](https://user-images.githubusercontent.com/51786870/211500862-912c16c5-731f-4269-bebc-f89fd2c4cf79.gif)
+**Demo IP Intelligence - What has been configured**
 
+1. Navigate to Security > Application Security > Policy Building > Learning and Blocking Settings and expand the IP Addresses and Geolocations section.
 
+**Note**
 
+`These are the settings that govern what happens when a violation occurs such as Alarm and Block. We will cover these concepts later in the lab but for now the policy is in blocking but within the IPI configuration is we enabled alarm only.`
 
+2. Navigate to Security › Application Security > Security Policies > Policies List.
 
+3. Select the Security Policy named “Hackazon-WAF-IPI”. Within the “Policy Configuration” choose “IP Intelligence”.
 
+4. Notice at the top right that IPI is “ON” and alarm is configured for each category.
+
+![img_class1_module1_animated_3](https://user-images.githubusercontent.com/51786870/211505383-ae360e0a-9397-4a42-9955-ffd6bb7b6904.gif)
+
+5. For the demo to work, XFF inspection in the WAF policy is enabled via to Security > Application Security > Security Policies > Policies List > Hackazon-WAF-IPI.
+
+![img_class1_module1_animated_4](https://user-images.githubusercontent.com/51786870/211505436-b34012d2-138a-4c7c-8112-62c4a8e471be.gif)
+
+6. Navigate to Local Traffic > Virtual Servers and click on VS named vs_Hackazon_III.
+
+7. You´ll notice withing the Configuration that we used a HTTP Profile (Client) with XFF enabled.
+
+8. Under the Security tab in the top middle of the GUI click on Policies and your policy settings included a Application Security Policy named Hackazon-WAF-IPI and a Log Profile named ASM-BOT-DoS-Log-All.
+
+![img_class1_module1_animated_5](https://user-images.githubusercontent.com/51786870/211505526-7f6725b6-f2c2-47cd-8b97-0bf39ed93a4b.gif)
+
+**Note**
+
+`It is best practice to enable Trust XFF in the policy when configuring IPI via WAF policy. XFF inspection is one of the advantages to consider when deploying IPI and can only be done via WAF policy. Although this setting is not needed to demonstrate this lab, it is strongly recommended to have it enabled. Attackers often use proxies to add in source IP randomness. Headers such as XFF are used to track the original source IP so the packets can be returned. In this example the HTTP request was sent from a malicious IP but through a proxy that was not known to be malicious. The request was picked up at Layer 7 due to the WAF’s capabilities. This demonstrates the importance of implementing security in layers.`
+
+**This concludes IP Intelligence Lab**
 
 ### Exercise 1 - Task 2 - Add a Geolocation Policy
+
 Another practical control to implement early on in your WAF deployment is Geolocation blocking or fencing. If we know that our application is only supposed to be accessed from certain countries or not accessed from others, now is the time to get that configured and enforced.
 
 `Much like our Layer 7 IPI Policy, with Advanced WAF the Geolocation logic happens at the policy level. You may have many policies each with their own unique configuration per application or you may use a parent policy that has baseline settings.`
 
 ### Geolocation
-**For demonstration purposes you will now disable the Layer 3 Global IPI policy to ensure Layer 7 Geolocation & IPI events occur.**
-1. Browse to **Security > Network Firewall > IP Intelligence > Policies** and set the Global Policy Assignment to **None** and click **Update**.
-2. Open **Security > Application Security > Geolocation Enforcement**
-3. Select all Geolocations **except the United States and N/A** and move them to Disallowed Geolocations. **Save** and then **Apply Policy**.
-![image](https://user-images.githubusercontent.com/38420010/119356800-1ef70e80-bca7-11eb-8486-093801f0641e.png)
+
+1. Logon to BIGIP webUI
+
+2. Open **Security  ››  Application Security : Security Policies : Policies List**, edit **Hackazon-WAF-IPI** and under Policy Configuration > General Settings scroll down to Geolocation Enforcement
+
+![image](https://user-images.githubusercontent.com/51786870/211506687-30802c0f-c3db-400f-9353-3f2b791e53b8.png)
+
+3. Select **Kazakhstan** and move it to Disallowed Geolocations. **Save** and then **Apply Policy** and go to **Hackazon - IPI** tab in the browser. The request should be blocked
+
+![image](https://user-images.githubusercontent.com/51786870/211507709-ae19f00e-a891-4aed-8584-d91fceb17611.png)
+
 `N/A covers all RFC1918 private addresses. If you aren’t dropping them at your border router (layer 3), you may decide to geo-enforce at ASM (Layer 7) if no private IP’s will be accessing the site.`
+
 4. Navigate to **Security > Event Logs > Application > Requests** and review the entries in the event log that contain both IPI and Geolocation violations.
-![image](https://user-images.githubusercontent.com/38420010/119356892-3afab000-bca7-11eb-921e-0ff198b705b8.png)
+
+![image](https://user-images.githubusercontent.com/51786870/211508141-dcb58470-d9aa-4dd2-8690-ab70942a8bdf.png)
+
 `You can also perform Geolocation Enforcement with LTM policies attached to Virtual Servers even if you are only licensed for Advanced WAF. Blocking decisions made here would not be reflected in the Application Requests WAF Log but can be still be logged.`
 
 
-**This completes Exercise 1.2
+**This completes Exercise 1 Task 2**
 
-Congratulations! You have just completed Lab 1 by implementing an IPI policy globally at Layer 3 and at Layer 7 via WAF policy for a specific application. Next you added Geolocation Enforcement to the policy and learned that this can be done via WAF policy or LTM policy. This follows our best-practice guidance for getting started with Application Security.**
+**Congratulations! You have just completed Lab 1 by implementing an IPI policy globally at Layer 3 and at Layer 7 via WAF policy for a specific application. Next you added Geolocation Enforcement to the policy and learned that this can be done via WAF policy or LTM policy. This follows our best-practice guidance for getting started with Application Security.**
 
 
 
