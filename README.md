@@ -626,6 +626,7 @@ In this Lab we want to get familar with the Bot Detection Capabilities of AWAF. 
 
 `To only focus on Bot Defense, we will use the “vs_Hackazon_I” virtual server for this, because there is no WAF policy attached to it. If you wanna use a different VS, please make sure that there is no WAF policy active.`
 
+![image](https://user-images.githubusercontent.com/51786870/211516332-db80f062-7398-48db-b48a-f2f7db2c564b.png)
 
 ### Create Logging Profile
 
@@ -633,107 +634,127 @@ In this Lab we want to get familar with the Bot Detection Capabilities of AWAF. 
 
 `The “vs_Hackazon_I” virtual server already has a Logging Profile attached to it, which can be used for this demo. In case there is no Logging Profile attached or you want to create your own profile for this demo, use the steps described below.`
 
-Navigate to Security > Event Logs > Logging Profiles and create a new Logging Profile with the settings shown in the screenshot below (local publisher with all options enabled).
+1. Navigate to Security > Event Logs > Logging Profiles and create a new Logging Profile with the settings shown in the screenshot below (local publisher with all options enabled).
 
-Give it a name and click create.
+2. Give it a name and click create.
 
-../../_images/image02.png
+![image](https://user-images.githubusercontent.com/51786870/211516680-d49e05fc-64b5-4b5a-beb1-73f82a89a74f.png)
 
-Create Bot Defense Profile¶
-Note
+**Create Bot Defense Profile**
 
-The “vs_Hackazon_I” virtual server already has a Bot Defense Profile attached to it, which can be used for this demo. In case there is no profile attached or you want to create your own for this demo, use the steps described below.
+**Note**
 
-Navigate to Security > Bot Defense > Bot Defense Profiles and click Create.
+`The “vs_Hackazon_I” virtual server already has a Bot Defense Profile attached to it, which can be used for this demo. In case there is no profile attached or you want to create your own for this demo, use the steps described below.`
 
-Choose a name (e.g. mybotprofile) and set the Enforcement mode to transparent. Review the Bot Mitigation Settings and Signature Enforcement, but leave all settings on default for now (We will cover more options in Class 2 / Module 1).
+1. Navigate to Security > Bot Defense > Bot Defense Profiles and click Create.
 
-Click Save
+2. Choose a name (e.g. mybotprofile), switch the Profile Template to Relaxed and set the Enforcement mode to Transparent. Review the Bot Mitigation Settings and Signature Enforcement, but leave all settings on default for now (We will cover more options in next module).
 
-../../_images/image03.png
+![image](https://user-images.githubusercontent.com/51786870/211517194-2a30f948-e107-49fe-977f-27b6c49957e3.png)
 
-Enable Bot Defense and Logging¶
-Navigate to Local Traffic > Virtual Servers > Virtual Server List > vs_Hackazon_I
+3. Click Save
 
-Click on the Security Tab and click Policies.
 
-Enable Bot Defense and Logging with the profiles created before. (as mentioned before, you can use the preconfigured settings for this demo)
+## Enable Bot Defense and Logging
 
-Click Update
+1. Navigate to Local Traffic > Virtual Servers > Virtual Server List > vs_Hackazon_I
 
-Note
+2. Click on the Security Tab and click Policies.
 
-Make sure there is either the existing Logging Profile: L7-DOS_BOT_Logger or the new created Logging Profile attached to this VS.
+3. Disable DOS profile and enable Bot Defense and Logging with the profiles created before. (as mentioned before, you can use the preconfigured settings for this demo)
 
-../../_images/image04.png
+4. Disable Application Security Policy if there is any assinged
 
-Start generating Traffic¶
-Open a ssh session to the Kali system.
+5. Click Update
 
-Note
+**Note**
 
-To open a ssh session to UDF you need to provide your public key. For more information, please refer to the UDF documentation.
+`Make sure there is either the existing Logging Profile: L7-DOS_BOT_Logger or the new created Logging Profile attached to this VS.`
 
-make sure you are in the directory:
+![image](https://user-images.githubusercontent.com/51786870/211517720-4bf47407-267c-4b7b-92c2-be64230a78f4.png)
 
-/home/ec2-user
-start generating traffic by using the script “baseline_menu.sh”:
+## Start generating Traffic
 
+1. Open a ssh session to the Kali system.
+
+**Note**
+
+`To open a ssh session to UDF you need to provide your public key. For more information, please refer to the UDF documentation.`
+
+2. Make sure you are in the directory:
+
+`/home/ec2-user`
+
+3. Start generating traffic by using the script “baseline_menu.sh”:
+
+```
 sudo su
-screen + press ENTER
 ./baseline_menu.sh
 choose 1
-de-attach by clicking Ctrl+a+d
-screen
+```
+
+![image](https://user-images.githubusercontent.com/51786870/211518578-f86a74b1-0dca-4ee2-9a1b-709b4690b03b.png)
+
+4. Open another session to Kali linux and run the script
+
+```
 ./baseline_menu.sh
 choose 2
-de-attach by clicking Ctrl+a+d
-Activate both options:
+```
 
-../../_images/image05.png
 it should look like this:
 
-../../_images/image06.png
-Navigate to Security > Event Logs > Bet Defense > Bot Traffic and review the Dashboard. Click on the “vs_Hackazon_I” VS to see more details for this specific Application.
+![image](https://user-images.githubusercontent.com/51786870/211519105-86dfeb3a-91b7-4adc-acec-9fb769e68da3.png)
 
-../../_images/image07.png
-Note
+![image](https://user-images.githubusercontent.com/51786870/211519160-163678b9-d2cf-4161-9d47-ee62f99e3d34.png)
 
-It may take some time before you can see some results.
+5. Navigate to Security > Event Logs > Bet Defense > Bot Traffic and review the Dashboard. Click on the “vs_Hackazon_I” VS to see more details for this specific Application.
 
-Click on any Bot Categories to see detected Bots (per category)
+![image](https://user-images.githubusercontent.com/51786870/211519606-65318d5a-e8a1-4e45-9b53-3477aa18e91c.png)
 
-../../_images/image08.png
-Go back to the Start Dashboard ans click on “detected Bots” to see all.
+**Note**
 
-../../_images/image09.png
-Override settings and create execptions for specific bots¶
-Note
+`It may take some time before you can see some results.`
 
-It may occur, that some Bots are detected as false positives and/or the false mitigation action will be applied. In this case, you can create exceptions to override the default settings per bot.
+6. Click on any Bot Categories to see detected Bots (per category)
 
-Navigate to Security > Bot Defense > Bot Defense Profiles and click on the profile (either your own or the preconfigured bot-defense-upgraded-from-Hackazon_BaDOS profile).
+![image](https://user-images.githubusercontent.com/51786870/211520167-7ad7ce33-bc58-4fae-8a2b-86d7bd5c81e9.png)
 
-Click on Bot Mitigation Setings
+7. Go back to the Start Dashboard ans click on “detected Bots” to see all.
 
-On the Bottom, click on Add Exception
+![image](https://user-images.githubusercontent.com/51786870/211530593-4d6f5b00-df24-4d6b-8772-a2bd6f5c01bf.png)
 
-../../_images/image10.png
-Note
+### Override settings and create execptions for specific bots
 
-The system automatically stores all seen bots (and based on signatures) sorted by classes and categories.
+**Note**
 
-In the search field type in: curl to filter for this specific type, select curl (category: untrusted bot) and click add.
+`It may occur, that some Bots are detected as false positives and/or the false mitigation action will be applied. In this case, you can create exceptions to override the default settings per bot.`
 
-You now can define a specific action for curl, which overrides the global action for this category (untrusted bot). Exceptions are are on a per profile basis. Change the action to “block” and click “Save”.
+1. Navigate to Security > Bot Defense > Bot Defense Profiles and click on the profile (either your own or the preconfigured bot-defense-upgraded-from-Hackazon_BaDOS profile).
 
-Open a Terminal Server Session to the “Windows Client System” and run the “01-Curl-Bot” batch-file, located on the Desktop.
+2. Click on Bot Mitigation Setings
 
-Back in TMUI navigate to Event Logs > Bot Defense > Bot Requests verify the requests seen.
+3. On the Bottom, click on Add Exception
 
-Note
+![image](https://user-images.githubusercontent.com/51786870/211530696-965b0e02-c2de-4fe4-b267-e19cca13065c.png)
 
-As the baseline script is still running, it may be needed to search for a specific log entry. Click the filter icon and select “denied”, to display only blocked requests.
+**Note**
+
+`The system automatically stores all seen bots (and based on signatures) sorted by classes and categories.`
+
+4. In the search field type in: curl to filter for this specific type, select curl (category: untrusted bot) and click add.
+
+5. You now can define a specific action for curl, which overrides the global action for this category (untrusted bot). Exceptions are are on a per profile basis. Change the action to “block” and click “Save”.
+
+6. Open a Terminal Server Session to the “Windows Client System” and run the “01-Curl-Bot” batch-file, located on the Desktop.
+
+7. Back in TMUI navigate to Event Logs > Bot Defense > Bot Requests verify the requests seen.
+
+**Note**
+
+`As the baseline script is still running, it may be needed to search for a specific log entry. Click the filter icon and select “denied”, to display only blocked requests.`
+
+**That concludes the lab**
 
 ## Exercise 2.2: More Bot Mitigation Techniques
 
