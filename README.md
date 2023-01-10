@@ -130,6 +130,11 @@ Expected time to complete: 30 minutes
 
 3. Configure a pool **juiceshop_pool** on BIGIP (**https://10.1.1.9**) using that service as a pool member (**10.1.20.5:3000**)
 
+Check the password to the BIGIP from UDF. For security reasons it is not displayed below.
+
+![image](https://user-images.githubusercontent.com/51786870/211490631-ed7fd6d9-fae2-4c1a-9073-6c8a6635e57d.png)
+
+
 4. Navigate to **Local Traffic > Pools > Pool List** and click **Create**
 
 ![image](https://user-images.githubusercontent.com/51786870/210507341-b9e53b9d-052a-4b9a-969d-f9b7f1eeb83a.png)
