@@ -768,11 +768,11 @@ In this Lab we want to get familar with all the additional features avaialble fo
 
 ### Create Logging Profile
 
-1. Navigate to **Security > Event Logs > Logging Profiles** and create a new Logging Profile with the settings shown in the screenshot below (local publisher with all options enabled).
+1. Navigate to **Security > Event Logs > Logging Profiles** and create a new Logging Profile (**If not created earlier**) with the settings shown in the screenshot below (local publisher with all options enabled).
 
 2. Give it a name and click **Create**.
 
-![image](https://user-images.githubusercontent.com/51786870/211288619-7a5120c7-f7de-4bde-ad74-37f18888ee4d.png)
+![image](https://user-images.githubusercontent.com/51786870/211531633-c07729ef-8a75-4176-82ca-63fd278bfb39.png)
 
 ### Create Bot Defense Profile
 
