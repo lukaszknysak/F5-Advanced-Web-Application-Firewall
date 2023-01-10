@@ -174,7 +174,7 @@ Check the password to the BIGIP from UDF. For security reasons it is not display
 1. Navigate to **Security > Application Security > Security Policies** and click the Plus (+) button.
 2. Name the policy: **juiceshop_policy**
 3. Select Policy Template: **Rapid Deployment Policy** (accept the popup)
-4. Select Virtual Server: **insecureApp1_vs**
+4. Select Virtual Server: **juiceshop_vs**
 5. Logging Profiles: **Log all requests**
 6. Notice that the Enforcement Mode is already in **Transparent Mode** and Signature Staging is **Enabled**
 7. Click **Save**.
@@ -200,6 +200,7 @@ We use Rapid Deployment Policy template to create our policy and we deploy it in
 4. Click back on the Advanced WAF GUI tab in your browser and refresh the traffic learning screen. If you navigated away or closed the tab, open a new one, login to Advanced WAF and go to: **Security > Application Security > Policy Building > Traffic Learning**.
 
 5. You will see many Suggestions and a learning score that the system assigns based on how many times it has seen an occurence and from what source. You can **Accept, Delete, Ignore** or **Export** the suggestion.
+
 `This is where it usually starts to get a little dicey for a first-time WAF admin. Always look very carefully at the suggested action before deciding on which action to take. It is also helpful to define a whitelist so that the policy can learn quicker and from known trusted sources. You generally do not want the system learning from random and/or hostile Internet traffic and making suggestions to relax the policy.`
 6. Notice that most of the learning suggestions involve enabling various HTTP protocol Compliance Checks.
 7. Find and select the suggestion for **Enable HTTP protocol compliance check - HTTP Check: No Host header in HTTP/1.1 request**.
@@ -232,20 +233,27 @@ curl -k -H 'Host:' http://10.1.10.58/
 ![image](https://user-images.githubusercontent.com/51786870/210514606-874dc305-c37d-4c36-8a0e-2a377c6eb06a.png)
 
 15. Review the **Alarmed request in Security > Event Logs > Application > Requests**.
+
 ![image](https://user-images.githubusercontent.com/51786870/210514759-14261d2d-7e5b-478a-9a0a-65f6e6d06036.png)
+
 16. To review, you just took a learning suggestion and accepted it to enable a protocol compliancy check and then you disabled future learning suggestions for this event. Violations are now alarmed in the Event Logs.
-16. Go back to**Security > Application Security > Policy Building > Traffic Learning** You would now typically go through and enable all of the checks that the policy is recommending regarding http protocol compliance and evasion technique detection.
+
+17. Go back to **Security > Application Security > Policy Building > Traffic Learning** You would now typically go through and enable all of the checks that the policy is recommending regarding http protocol compliance and evasion technique detection.
+
 `Remember that your policy is safely in transparent mode so accepting suggestions and enabling checks will only raise alarms and no blocking actions will occur. This is why it is very important to start off transparently until you fully understand the basics of managing a WAF policy.`
 
 ### Policy Building Process
-One thing you can do to greatly increase the integrity of the learning suggestions is, define trusted IP’s. You can also tell the system to Only learn from trusted IP’s which is a very wise thing to do if you are developing policy on an app that is exposed to untrusted or Internet traffic.
+
+One thing you can do to greatly increase the integrity of the learning suggestions is, define trusted IP’s. You can also tell the system to **Only learn from trusted IP’s** which is a very wise thing to do if you are developing policy on an app that is exposed to untrusted or Internet traffic.
 
 1. Go to **Security > Application Security > Policy Building > Learning and Blocking Settings** and expand the **Policy Building Process** section at the bottom. Here you can see settings that this particular policy is using for learning. Enable "**Advanced**" view. Notice that **Trusted IP Addresses List** is empty.
+
 2. Click the little window/arrow icon next to **Trusted IP Addresses** List is empty.
 
 ![image](https://user-images.githubusercontent.com/51786870/210515220-b4ba2d3c-8db0-4a00-963c-c872b1c0b374.png)
 
 3. This takes you to: **Security > Application Security > IP Addresses > IP Address Exceptions**. Click **Create**.
+
 4. For IP Address: **10.0.0.0** and for Netmask: **255.0.0.0**. Check the box for **Policy Builder trusted IP** and click **Add** and **Apply Policy**.
 
 ![image](https://user-images.githubusercontent.com/51786870/210515429-3cfcc6ad-14b0-44d1-b7c2-d2db7d9d5821.png)
@@ -258,14 +266,17 @@ One thing you can do to greatly increase the integrity of the learning suggestio
 **You now know how to define a trusted ip and configure the policy building process settings**
 
 ### Burp’ing the App
+
 In this section we are going to use the free/community version of an excellent DAST tool; Burp. Unfortunately, the free version does not actually allow DAST but it is still an excellent tool for packet crafting and that’s exactly how we are going to use it.
 
 ### Accept the Remaining Learning Suggestions
+
 Go to **Security > Application Security > Policy Building > Traffic Learning** and select all of the remaining suggestions and click **Accept > Accept suggestions** and then **Apply Policy**.
 
 ![image](https://user-images.githubusercontent.com/51786870/210516002-469b26b5-1f07-46a6-92ef-8af052c88dea.png)
 
 ### HTTP Compliancy Check - Bad Host Header Value
+
 The **Bad Host Header Value** check is an HTTP Parser Attack and definitely something that should be implemented as part of **Good WAF Security**. It was included in the suggestions you just accepted.
 
 **Risk**: If we allow bad host header values they can be used to Fuzz web servers and gather system information. Successful exploitation of this attack could allow for the execution of XSS arbitrary code.
@@ -298,10 +309,13 @@ username=student@f5demo.com&password=student
 
 ![image](https://user-images.githubusercontent.com/51786870/210516998-8b436fc6-da42-4043-8a99-6d5053e8f337.png)
 
-7. Back in Advanced WAF, browse to **Security > Event Logs > Application > Requests** and review the alert for this Sev5 attack. Note the alert severity is much higher (5) for this attack type due to several violations occuring including HTTP protocol Violations and several XSS signatures.
+7. Back in Advanced WAF, browse to **Security > Event Logs > Application > Requests** and review the alert for this Severity 5 attack. Note the alert severity is much higher (5) for this attack type due to several violations occuring including HTTP protocol Violations and several XSS signatures.
 8. Review all the details and then click the 3 under the **Attack Signature Detected** violation to see all of the staged XSS Attack Signatures that were triggered.
 
 ![image](https://user-images.githubusercontent.com/51786870/210517143-d77e7f19-9997-4cd0-b4a9-ce0ce56fb449.png)
+
+![image](https://user-images.githubusercontent.com/51786870/211494066-b9a2acb6-9647-43b8-804d-efb3425abf44.png)
+
 
 ### Server Technologies & Attack Signatures
 In this final exercise we will examine server technologies which allow you to automatically discover server-side frameworks, web servers and operating systems. This feature helps when the backend technologies are not well known or communicated from the Dev team.
@@ -329,7 +343,7 @@ In this final exercise we will examine server technologies which allow you to au
 
 **Framework Attack**
 ```
-POST https://10.1.10.57/#/login HTTP/1.1
+POST https://10.1.10.58/#/login HTTP/1.1
 User-Agent: BestBrowser
 Pragma: no-cache
 Cache-Control: no-cache
@@ -343,7 +357,7 @@ username=student@f5demo.com&password=student
 ![image](https://user-images.githubusercontent.com/51786870/210518168-1db7f73d-118c-41a2-8d24-9ba6360a80a8.png)
 
 
-2. Browse to **Security > Event Logs > Application > Requests** and look for the most recent Sev5 Event. Select the event, review the violations and click the 2 under Occurrences for the Attack signature detected violation.
+2. Browse to **Security > Event Logs > Application > Requests** and look for the most recent Severity 5 Event. Select the event, review the violations and click the 2 under Occurrences for the Attack signature detected violation.
 
 ![image](https://user-images.githubusercontent.com/51786870/210518293-2c1ce688-5905-4d25-b737-7638fdc3f0f4.png)
 
@@ -372,111 +386,63 @@ We created a transparent policy way back in Lab 1 to configure Transparent WAF P
   * Estimated time for completion: 30 minutes.
 
 ### Create Your 1st L3 IPI Policy
+
 An IPI policy can be created and applied globally, at the virtual server (VS) level or within the WAF policy itself. We will follow security best-practice by applying IPI via a Global Policy to secure Layer 3 device-wide and within the Layer 7 WAF policy to protect the App by inspecting the HTTP X-Forwarded-For Header.  
+
 ![image](https://user-images.githubusercontent.com/38420010/119348500-3e893980-bc9d-11eb-8836-e57471dc73a8.png)
 
 In this first lab, we will start by enabling a Global IPI Policy; much like you would do, as a day 1 task for your WAF:  
   
-1. RDP to the Linux Client by choosing the RDP access method from your UDF environment page. You will be presented with the following prompt where you will enter the password only. Please use f5student username:
-
-![image](https://user-images.githubusercontent.com/38420010/119348695-83ad6b80-bc9d-11eb-84a6-ad49b8747f0c.png)
+1. RDP to the Windows Client by choosing the RDP access method from your UDF environment page. 
 
 2. Once logged in, launch Chrome Browser. You can double-click the icon or right click and choose execute but do not click multiple times. It does take a few moments for the browser to launch the first time.
-3. Click the bigip01 bookmark and login to TMUI. It is normal to see a certificate warning that you can safely click through. Or you can use TMUI access via UDF.
+
+3. Open a web session to the BIGIP at https://10.1.1.9 and login to TMUI. It is normal to see a certificate warning that you can safely click through. Or you can use TMUI access via UDF.
+
 4. On the Main tab, click Local Traffic > Virtual Servers and you will see the Virtual Servers that have been pre-configured for your lab. Essentially, these are the listening IP’s that receive requests for your application and proxy the requests to the backend “real” servers.
 
-![image](https://user-images.githubusercontent.com/38420010/119349079-020a0d80-bc9e-11eb-91ed-d77da464c136.png)
+![image](https://user-images.githubusercontent.com/51786870/211496992-cf9618be-f746-4b41-8c5e-a1fac2cf601b.png)
 
-  * **insecureApp1_vs** - Main Site - Status of green indicates a healthy backend pool of real servers
-  * **security-testing-overlay-vs** - Will be used later to send spoofed traffic to the main site
+During tests we will use the VS below:
 
-5. On the Main tab, click Security > Network Firewall > IP Intelligence > Policies.
-![image](https://user-images.githubusercontent.com/38420010/119349565-94121600-bc9e-11eb-9588-d95a3e714f33.png)
+  * **vs_Hackazon_III** - Main Site - Status of green indicates a healthy backend pool of real servers
 
-6. Click on the **Create** button.
-7. For the name: **global_ipi**
-8. Under **IP Intelligence Policy Properties** For the Default Log Action choose **yes** to **Log Category Matches.**
-9. Browse to the inline Help tab at the top left of the GUI and examine the Default Log Action settings. Inline help is very useful when navigating the myriad of options available within any configuration screen.
-10. To the right of the screen, click **Add** under the categories section.
-11. Repeat this process and add the following additional categories: **phishing, scanners, spam_sources, & denial_of_service**. Outside of this lab, you would want to enable additional categories for protection.
+5. In Chrome and click on the Add-On called **X-Forwarded-For Header**.
 
-![image](https://user-images.githubusercontent.com/38420010/119351114-69c15800-bca0-11eb-9264-d5ebeeca6c1e.png)
+![image](https://user-images.githubusercontent.com/51786870/211503785-6425f625-e286-4ce8-b69c-6ce97fa8ba9d.png)
 
-12. Commit the Changes to the System.
-13. Under **Global Policy Assignment > IP Intelligence Policy** click on the dropdown and select the **global_ipi** policy and click Update.
+6. Within here, you have already an IP configured which should trigger a IPI violation in the Event Logs of AWAF.
 
-### Setup Logging for Global IPI
-1. In the upper left of the GUI under the **Main** tab, navigate to **Security > Event Logs > Logging Profiles** and click on **global-network**
-2. Under the Network Firewall section configure the IP Intelligence publisher to use **local-db-publisher**
-3. Check **Log GEO Events**
-4. Click **Update**
-![image](https://user-images.githubusercontent.com/38420010/119351448-bf960000-bca0-11eb-8704-5fd25bfb1f29.png)
+To ensure the IP is still in bad category test from https://www.brightcloud.com/tools/url-ip-lookup.php
 
-### Test
-1. On the Linux Client, open a terminal and **cd** to **Agility2020wafTools**
-2. Run the following command to send some traffic to the site: **./ipi_tester**
-`The script should continue to run for the remainder of Lab 1 & 2. Do NOT stop the script.`
-3. Navigate to **Security > Event Logs > Network > Ip Intelligence** and review the entries. Notice the Geolocation Data as well as the Black List Class to the right of the log screen.
+![image](https://user-images.githubusercontent.com/51786870/211503270-6e82857c-f756-49fd-8d7d-77a14c1cfbc3.png)
 
-![image](https://user-images.githubusercontent.com/38420010/119351937-5b277080-bca1-11eb-882e-bb0d893f125b.png)
-
-### Create Custom Category
-1. Navigate to: **Security > Network Firewall > IP Intelligence > Blacklist Categories** and click **Create**.
-2. Name: **my_bad_ips** with a match type of **Source**
-3. Click **Finished**
-4. Click the checkbox next to the name **my_bad_ips** and then at the bottom of the GUI, click **Add To Category**.
-![image](https://user-images.githubusercontent.com/38420010/119352108-8d38d280-bca1-11eb-8734-52f48cb89621.png)
-5. Enter the ip address: **134.119.218.243** or any of the other malicious IP’s showing up in the IP Intelligence logs, and set the seconds to **3600** (1 hour)
-6. Click **Insert Entry**
-7. Navigate to **Security > Network Firewall > IP Intelligence > Policies** and click **global_ipi**
-8. Under **Categories** click **Add** and select your new custom category **my_bad_ips** from the drop-down. Click **Done Editing** and **Commit Changes to System**.
-![image](https://user-images.githubusercontent.com/38420010/119352376-e6086b00-bca1-11eb-8c5a-8213f0ea3e55.png)
-9. Navigate back to **Security > Event Logs > Network > Ip Intelligence** and review the entries under the column **Black List Class**. You will see entries for your custom category **my_bad_ips**.
-![image](https://user-images.githubusercontent.com/38420010/119352409-f1f42d00-bca1-11eb-9885-2f5c43833c35.png)
-
-**This concludes the Layer 3 IPI policy lab section.**  
-  
-**To recap, you have just configured a Global IP Intelligence policy and added a custom category.
-This policy is inspecting Layer 3 only and is a best-practice first step to securing your Application traffic.**  
-  
-
-### Configure L7 IPI
-1. Navigate to **Security > Application Security > Policy Building > Learning and Blocking Settings** and expand the **IP Addresses and Geolocations** section.
-`These are the settings that govern what happens when a violation occurs such as Alarm and Block. We will cover these concepts later in the lab but for now the policy is still transparent so the blocking setting has no effect.`
-![image](https://user-images.githubusercontent.com/38420010/119355305-64b2d780-bca5-11eb-8102-9f4e614507e7.png)
-2. Navigate to **Security > Application Security > IP Addresses > IP Intelligence** and enable **IP Intelligence** by checking the box.
-3. Notice at the top left drop-down that you are working within the webgoat_waf policy context. Enable **Alarm** and **Block** for each category.
-![image](https://user-images.githubusercontent.com/38420010/119355409-84e29680-bca5-11eb-8572-5f8809e3ae8e.png)
-4. Click **Save** and **Apply Policy**. You will get an “Are you sure” popup that you can banish by clicking **Do not ask for this confirmation again**.
-5. Enable XFF inspection in the WAF policy by going to **Security > Application Security > Security Policies > Policies List** > and click on webgoat_waf policy.
-6. Finally, scroll down under **General Settings** and click **Enabled** under **Trust XFF Header**.
-7. Click **Save** and **Apply Policy**
-
-### Test XFF Inspection
-1. Open a new terminal or terminal tab on the Client (the ipi_tester script should still be running) and run the following command to insert a malicious IP into the XFF Header:
-
-```bash
-curl -H "X-Forwarded-For: 134.119.218.243" -k https://10.1.10.145/xff-test
-```
 If that IP has rotated out of the malicious DB, you can try one of these alternates:
-* 80.191.169.66 - Spam Source
-* 85.185.152.146 - Spam Source
-* 220.169.127.172 - Scanner
-* 222.74.73.202 - Scanner
-* 62.149.29.36 - Spam Source
-* 82.200.247.241 - Phishing
-* 134.119.219.93 - Spam Source
-* 218.17.228.102 - Spam Source
-* 220.169.127.172 - Scanner
 
-2. Navigate to **Security > Event Logs > Application > Requests** and review the entries. You should see a Sev3 Alert for the attempted access to uri: **/xff-test** from a malicious IP.
-![image](https://user-images.githubusercontent.com/38420010/119356456-bb6ce100-bca6-11eb-91e7-316e32571e48.png)
+   * 82.200.247.241 - Phishing
+   * 134.119.219.93 - Spam Source
+   * 218.17.228.102 - Spam Source
+   * 220.169.127.172 - Scanner
 
-3. In the violation details you can see the entire request details including the XFF Header even though this site was using strong TLS for encryption.
+![img_class1_module1_animated_1](https://user-images.githubusercontent.com/51786870/211500447-3c309fd2-8f4c-47cb-8939-d5e7e14510af.gif)
 
-`Attackers often use proxies to add in source IP randomness. Headers such as XFF are used to track the original source IP so the packets can be returned. In this example the HTTP request was sent from a malicious IP but through a proxy that was not known to be malicious. The request passed right through our Global Layer 3 IPI policy but was picked up at Layer 7 due to the WAF’s capabilities. This demonstrates the importance of implementing security in layers.`
+### Exercise 1 – Task 1 - Review IP Intelligence Log entries on Advanced WAF
 
-## Exercise 1.2: Add a Geolocation Policy
+1. IP Intelligence is already configured on BIG-IP.
+
+2. Login to BIG-IP via WebUI (The Password of the BIG-IP instance is listed within the Details / Documentation Tab).
+
+3. Navigate to **Security > Event Logs > Application > Requests** and review the entries. You should see a Severity 3 Alert for the attempted access to uri: /xff-test from a malicious IP.
+
+![img_class1_module1_animated_2](https://user-images.githubusercontent.com/51786870/211500862-912c16c5-731f-4269-bebc-f89fd2c4cf79.gif)
+
+
+
+
+
+
+
+### Exercise 1 - Task 2 - Add a Geolocation Policy
 Another practical control to implement early on in your WAF deployment is Geolocation blocking or fencing. If we know that our application is only supposed to be accessed from certain countries or not accessed from others, now is the time to get that configured and enforced.
 
 `Much like our Layer 7 IPI Policy, with Advanced WAF the Geolocation logic happens at the policy level. You may have many policies each with their own unique configuration per application or you may use a parent policy that has baseline settings.`
