@@ -153,7 +153,10 @@ Check the password to the BIGIP from UDF. For security reasons it is not display
 ![image](https://user-images.githubusercontent.com/51786870/210508814-db77afce-47e5-47ea-a8a5-01721eaacc37.png)
 
 
-8. Search for Notepad tool, right click on the app and click "Run as administrator"
+8. Connect to the win-client jumphost with **user/user** credentials using RDP session. Search for Notepad tool, right click on the app and click "Run as administrator"
+
+![image](https://user-images.githubusercontent.com/51786870/214785351-826e3e57-6935-460f-a65a-924ffecb3590.png)
+
 
 ![image](https://user-images.githubusercontent.com/51786870/210509098-bea6b633-bc85-4d9c-8c19-2301d0a67ec1.png)
 
