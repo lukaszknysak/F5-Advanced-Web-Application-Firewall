@@ -225,7 +225,8 @@ We use Rapid Deployment Policy template to create our policy and we deploy it in
 
 13. Uncheck the **Learn box** for this violation then **Save** and **Apply** policy.
 
-![image](https://user-images.githubusercontent.com/51786870/210513440-b6dfe3b0-e7d3-4cde-b2fd-996c732d1346.png)
+![image](https://user-images.githubusercontent.com/51786870/214851262-4402c16a-117e-4d97-8057-bda9550017de.png)
+
 
 14. Open a Kali linux Web Shell from the UDF platform, and send the following request. This request is being sent without a host header and should now raise a violation in our Event Log rather than a learning suggestion.
 
