@@ -205,7 +205,9 @@ We use Rapid Deployment Policy template to create our policy and we deploy it in
 5. You will see many Suggestions and a learning score that the system assigns based on how many times it has seen an occurence and from what source. You can **Accept, Delete, Ignore** or **Export** the suggestion.
 
 `This is where it usually starts to get a little dicey for a first-time WAF admin. Always look very carefully at the suggested action before deciding on which action to take. It is also helpful to define a whitelist so that the policy can learn quicker and from known trusted sources. You generally do not want the system learning from random and/or hostile Internet traffic and making suggestions to relax the policy.`
+
 6. Notice that most of the learning suggestions involve enabling various HTTP protocol Compliance Checks.
+
 7. Find and select the suggestion for **Enable HTTP protocol compliance check - HTTP Check: No Host header in HTTP/1.1 request**.
 
 ![image](https://user-images.githubusercontent.com/51786870/210512098-9c8236d7-bba6-47db-8840-486883d963cb.png)
