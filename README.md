@@ -296,8 +296,7 @@ The **Bad Host Header Value** check is an HTTP Parser Attack and definitely some
 
 4. Click the **Repeater** tab and paste in the following http request (Replace the username and password with credentials you have created.) and click **Send**.
 5. A popup window will appear to configure the target details. For host use: **10.1.10.58**. For port use: **80**. **Do not check the Use HTTPS box**.
-6. Click **Send**
-**XSS in HOST Header**  
+6. Click **Send**. XSS is in HOST Header.
 
 ```
 POST https://10.1.10.58/#/login HTTP/1.1
