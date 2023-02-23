@@ -265,7 +265,7 @@ One thing you can do to greatly increase the integrity of the learning suggestio
 ![image](https://user-images.githubusercontent.com/51786870/210515429-3cfcc6ad-14b0-44d1-b7c2-d2db7d9d5821.png)
 
 5. Navigate back to **Security > Application Security > Policy Building > Learning and Blocking Settings** and expand the **Policy Building Process** section. Notice that our newly defined network is now a **Trusted IP**. This will greatly enhance the speed and quality of learning suggestions.
-6. Change the view from Basic to Advanced and review all the fine-grained configurations for the **Policy Building Process**.
+6. Change the view from Basic to Advanced and review all the fine-grained configurations for the **Policy Building Process**. **Apply** the policy.
 
 ![image](https://user-images.githubusercontent.com/38420010/119369972-0beb3b00-bcb5-11eb-9cf4-c368a7172654.png)
 
